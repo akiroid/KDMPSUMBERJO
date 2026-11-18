@@ -1,0 +1,17 @@
+{
+  "name": "kdmp-sumberjo-webapp",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Web-App Single Page Application (SPA) Modern Glassmorphism Koperasi Desa Merah Putih (KDMP) Desa Sumberjo — Headless GAS + Google Sheets + Google Drive",
+  "scripts": {
+    "start": "npx serve .",
+    "build": "echo 'Static SPA ready for Vercel deployment'"
+  },
+  "keywords": [
+    "kdmp-sumberjo",
+    "koperasi-desa-merah-putih",
+    "google-apps-script",
+    "glassmorphism",
+    "vercel"
+  ]
+}

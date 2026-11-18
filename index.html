@@ -1,0 +1,3094 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>KDMP Desa Sumberjo — Portal Resmi Koperasi Desa Merah Putih & UMKM</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+  <style>
+    /* ==========================================================================
+       1. CSS VARIABLES & SISTEM TEMA (LIGHT / DARK GLASSMORPHISM)
+       ========================================================================== */
+    :root {
+      --bg-gradient-1: #eef5f0;
+      --bg-gradient-2: #dcece2;
+      --bg-gradient-3: #f7efe8;
+      --orb-primary: rgba(220, 38, 38, 0.20);
+      --orb-secondary: rgba(16, 185, 129, 0.24);
+      --orb-tertiary: rgba(245, 158, 11, 0.18);
+
+      --glass-bg: rgba(255, 255, 255, 0.62);
+      --glass-bg-strong: rgba(255, 255, 255, 0.82);
+      --glass-card-hover: rgba(255, 255, 255, 0.78);
+      --glass-border: rgba(255, 255, 255, 0.68);
+      --glass-shadow: 0 12px 32px -4px rgba(15, 23, 42, 0.08), 0 4px 12px -2px rgba(15, 23, 42, 0.04);
+      --glass-blur: blur(14px);
+
+      --text-color: #0f172a;
+      --text-muted: #475569;
+      --text-subtle: #64748b;
+
+      --brand-red: #dc2626;
+      --brand-red-dark: #b91c1c;
+      --brand-emerald: #059669;
+      --brand-emerald-dark: #047857;
+      --brand-gold: #d97706;
+
+      --input-bg: rgba(255, 255, 255, 0.75);
+      --input-border: rgba(148, 163, 184, 0.45);
+      --badge-bg: rgba(220, 38, 38, 0.10);
+      --badge-text: #b91c1c;
+      --badge-emerald-bg: rgba(5, 150, 105, 0.12);
+      --badge-emerald-text: #047857;
+
+      --radius-xl: 24px;
+      --radius-lg: 18px;
+      --radius-md: 12px;
+      --radius-pill: 9999px;
+      --transition-fast: 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    [data-theme="dark"] {
+      --bg-gradient-1: #09111e;
+      --bg-gradient-2: #0f1f1c;
+      --bg-gradient-3: #1b111a;
+      --orb-primary: rgba(239, 68, 68, 0.22);
+      --orb-secondary: rgba(16, 185, 129, 0.22);
+      --orb-tertiary: rgba(59, 130, 246, 0.18);
+
+      --glass-bg: rgba(15, 23, 42, 0.58);
+      --glass-bg-strong: rgba(15, 23, 42, 0.85);
+      --glass-card-hover: rgba(30, 41, 59, 0.75);
+      --glass-border: rgba(255, 255, 255, 0.14);
+      --glass-shadow: 0 16px 40px -6px rgba(0, 0, 0, 0.48), 0 4px 14px -2px rgba(0, 0, 0, 0.32);
+
+      --text-color: #f8fafc;
+      --text-muted: #cbd5e1;
+      --text-subtle: #94a3b8;
+
+      --brand-red: #ef4444;
+      --brand-red-dark: #dc2626;
+      --brand-emerald: #10b981;
+      --brand-emerald-dark: #059669;
+      --brand-gold: #f59e0b;
+
+      --input-bg: rgba(15, 23, 42, 0.72);
+      --input-border: rgba(255, 255, 255, 0.18);
+      --badge-bg: rgba(239, 68, 68, 0.18);
+      --badge-text: #fca5a5;
+      --badge-emerald-bg: rgba(16, 185, 129, 0.18);
+      --badge-emerald-text: #6ee7b7;
+    }
+
+    /* ==========================================================================
+       2. RESET & BASE LAYOUT
+       ========================================================================== */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      color: var(--text-color);
+    }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg, var(--bg-gradient-1) 0%, var(--bg-gradient-2) 52%, var(--bg-gradient-3) 100%);
+      background-attachment: fixed;
+      color: var(--text-color);
+      line-height: 1.6;
+      overflow-x: hidden;
+      position: relative;
+      transition: background 0.35s ease, color 0.25s ease;
+    }
+
+    /* Elemen dekorasi lanskap abstrak Desa Sumberjo di belakang layar */
+    .ambient-canvas {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .ambient-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(70px);
+      opacity: 0.85;
+      animation: floatOrb 18s infinite alternate ease-in-out;
+    }
+
+    .ambient-orb.orb-1 {
+      width: 440px;
+      height: 440px;
+      background: var(--orb-primary);
+      top: -110px;
+      left: -90px;
+    }
+
+    .ambient-orb.orb-2 {
+      width: 500px;
+      height: 500px;
+      background: var(--orb-secondary);
+      bottom: -140px;
+      right: -100px;
+      animation-delay: -6s;
+    }
+
+    .ambient-orb.orb-3 {
+      width: 360px;
+      height: 360px;
+      background: var(--orb-tertiary);
+      top: 42%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      animation-delay: -11s;
+    }
+
+    .landscape-silhouette {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 220px;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.18;
+    }
+
+    @keyframes floatOrb {
+      0% { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(28px, 34px) scale(1.08); }
+    }
+
+    /* ==========================================================================
+       3. KOMPONEN GLASSMORPHISM REUSABLE
+       ========================================================================== */
+    .glass-panel {
+      background: var(--glass-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--glass-border);
+      box-shadow: var(--glass-shadow);
+      border-radius: var(--radius-xl);
+      transition: transform var(--transition-fast), background var(--transition-fast), box-shadow var(--transition-fast), border-color var(--transition-fast);
+    }
+
+    .glass-card {
+      background: var(--glass-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--glass-border);
+      box-shadow: var(--glass-shadow);
+      border-radius: var(--radius-lg);
+      transition: transform var(--transition-fast), background var(--transition-fast), box-shadow var(--transition-fast);
+    }
+
+    .glass-card:hover {
+      transform: translateY(-4px);
+      background: var(--glass-card-hover);
+    }
+
+    .app-container {
+      position: relative;
+      z-index: 1;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px 18px 64px;
+    }
+
+    /* ==========================================================================
+       4. LOADING SPINNER OVERLAY MODERN
+       ========================================================================== */
+    .loading-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: var(--glass-bg-strong);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      transition: opacity 0.35s ease, visibility 0.35s ease;
+    }
+
+    .loading-overlay.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .spinner-ring {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      border: 4px solid rgba(220, 38, 38, 0.18);
+      border-top-color: var(--brand-red);
+      border-right-color: var(--brand-emerald);
+      animation: spinRing 0.85s linear infinite;
+    }
+
+    @keyframes spinRing {
+      to { transform: rotate(360deg); }
+    }
+
+    /* ==========================================================================
+       5. HEADER & NAVIGATION BAR
+       ========================================================================== */
+    .top-navbar {
+      position: sticky;
+      top: 14px;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 12px 20px;
+      margin-bottom: 26px;
+      border-radius: var(--radius-pill);
+    }
+
+    .brand-cluster {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .brand-logo {
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--brand-red) 0%, #991b1b 55%, var(--brand-emerald) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
+      font-weight: 800;
+      font-size: 1.05rem;
+      box-shadow: 0 6px 16px rgba(220, 38, 38, 0.28);
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .secret-tap-badge {
+      position: absolute;
+      top: -6px;
+      right: -6px;
+      background: var(--brand-gold);
+      color: #fff;
+      font-size: 0.65rem;
+      font-weight: 800;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transform: scale(0.6);
+      transition: all 0.2s ease;
+    }
+
+    .secret-tap-badge.active {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .brand-titles h1 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 1.08rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+    }
+
+    .brand-titles p {
+      font-size: 0.76rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .nav-links-group {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .nav-pill-btn {
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--text-color);
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 8px 14px;
+      border-radius: var(--radius-pill);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .nav-pill-btn:hover,
+    .nav-pill-btn.active {
+      background: var(--badge-bg);
+      color: var(--badge-text);
+      border-color: rgba(220, 38, 38, 0.25);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .theme-toggle-btn {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      border: 1px solid var(--glass-border);
+      background: var(--input-bg);
+      color: var(--text-color);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform var(--transition-fast), background var(--transition-fast);
+    }
+
+    .theme-toggle-btn:hover {
+      transform: rotate(14deg) scale(1.06);
+    }
+
+    .mode-indicator-btn {
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 8px 14px;
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--glass-border);
+      background: var(--input-bg);
+      color: var(--text-color);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all var(--transition-fast);
+    }
+
+    .mode-indicator-btn:hover {
+      border-color: var(--brand-emerald);
+      color: var(--brand-emerald);
+    }
+
+    /* ==========================================================================
+       6. BAGIAN 1: HERO & CARD SAMBUTAN UTAMA
+       ========================================================================== */
+    .hero-welcome-card {
+      padding: 36px 34px;
+      margin-bottom: 32px;
+      position: relative;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 1.35fr 0.65fr;
+      gap: 28px;
+      align-items: center;
+    }
+
+    .hero-badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .pill-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.76rem;
+      font-weight: 700;
+      padding: 5px 12px;
+      border-radius: var(--radius-pill);
+      background: var(--badge-bg);
+      color: var(--badge-text);
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+
+    .pill-badge.emerald {
+      background: var(--badge-emerald-bg);
+      color: var(--badge-emerald-text);
+    }
+
+    .hero-title {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: clamp(1.65rem, 3.2vw, 2.4rem);
+      font-weight: 800;
+      line-height: 1.2;
+      margin-bottom: 14px;
+      letter-spacing: -0.025em;
+    }
+
+    .hero-welcome-text {
+      font-size: 0.98rem;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+      line-height: 1.72;
+    }
+
+    .hero-speaker-box {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 12px 16px;
+      border-radius: var(--radius-md);
+      background: var(--input-bg);
+      border: 1px solid var(--glass-border);
+      width: fit-content;
+    }
+
+    .speaker-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--brand-emerald), #047857);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 0.95rem;
+      flex-shrink: 0;
+    }
+
+    .speaker-meta strong {
+      display: block;
+      font-size: 0.9rem;
+      color: var(--text-color);
+    }
+
+    .speaker-meta span {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .brand-logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 14px;
+      display: block;
+    }
+
+    .hero-right-column {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .hero-portrait-frame {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      border: 1px solid var(--glass-border);
+      background: rgba(15, 23, 42, 0.12);
+      box-shadow: var(--glass-shadow);
+    }
+
+    .hero-portrait-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .hero-portrait-caption {
+      position: absolute;
+      bottom: 10px;
+      left: 10px;
+      right: 10px;
+      padding: 8px 12px;
+      border-radius: 10px;
+      background: rgba(15, 23, 42, 0.76);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      color: #ffffff;
+      font-size: 0.76rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .speaker-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+      display: block;
+    }
+
+    .hero-stats-panel {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .stat-mini-card {
+      padding: 16px;
+      border-radius: var(--radius-md);
+      background: var(--input-bg);
+      border: 1px solid var(--glass-border);
+      text-align: left;
+    }
+
+    .stat-mini-card .stat-value {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--brand-red);
+      line-height: 1.1;
+      margin-bottom: 4px;
+    }
+
+    .stat-mini-card.emerald .stat-value {
+      color: var(--brand-emerald);
+    }
+
+    .stat-mini-card .stat-label {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    /* ==========================================================================
+       7. SECTION HEADINGS & FILTER TOOLBAR
+       ========================================================================== */
+    .section-block {
+      margin-bottom: 40px;
+    }
+
+    .section-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    .section-title-wrap h2 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 1.38rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .section-title-wrap p {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      margin-top: 3px;
+    }
+
+    .search-input-wrap {
+      position: relative;
+      min-width: 250px;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 10px 14px 10px 38px;
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--input-border);
+      background: var(--input-bg);
+      color: var(--text-color);
+      font-size: 0.86rem;
+      outline: none;
+      transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+    }
+
+    .search-input:focus {
+      border-color: var(--brand-emerald);
+      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.16);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 13px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-subtle);
+      pointer-events: none;
+    }
+
+    /* ==========================================================================
+       8. BAGIAN 2: TAUTAN CEPAT (FLOATING QUICK LINKS)
+       ========================================================================== */
+    .quick-links-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 14px;
+    }
+
+    .quick-link-btn {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 15px 18px;
+      text-decoration: none;
+      color: var(--text-color);
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .quick-link-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .quick-link-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 11px;
+      background: var(--badge-bg);
+      color: var(--badge-text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .quick-link-title {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* ==========================================================================
+       9. BAGIAN 3 & 4: GRID PRODUK KDMP & POTENSI UMKM DESA
+       ========================================================================== */
+    .catalog-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+      gap: 20px;
+    }
+
+    .catalog-card {
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      height: 100%;
+    }
+
+    .card-media-wrap {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      background: rgba(15, 23, 42, 0.08);
+      overflow: hidden;
+      border-bottom: 1px solid var(--glass-border);
+    }
+
+    .card-media-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.45s ease;
+    }
+
+    .catalog-card:hover .card-media-wrap img {
+      transform: scale(1.05);
+    }
+
+    .card-price-tag {
+      position: absolute;
+      bottom: 12px;
+      right: 12px;
+      padding: 6px 13px;
+      border-radius: var(--radius-pill);
+      background: rgba(15, 23, 42, 0.82);
+      backdrop-filter: blur(8px);
+      color: #ffffff;
+      font-weight: 800;
+      font-size: 0.86rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    }
+
+    .card-badge-top {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      padding: 5px 11px;
+      border-radius: var(--radius-pill);
+      background: rgba(255, 255, 255, 0.88);
+      color: #0f172a;
+      font-weight: 700;
+      font-size: 0.72rem;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+    }
+
+    .card-body {
+      padding: 18px 20px 20px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    .card-title {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 1.06rem;
+      font-weight: 800;
+      margin-bottom: 6px;
+      line-height: 1.32;
+    }
+
+    .card-subtitle {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--brand-emerald);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .card-desc {
+      font-size: 0.86rem;
+      color: var(--text-muted);
+      margin-bottom: 18px;
+      flex: 1;
+    }
+
+    .btn-wa-action {
+      width: 100%;
+      padding: 11px 16px;
+      border-radius: var(--radius-md);
+      border: none;
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: #ffffff;
+      font-weight: 700;
+      font-size: 0.88rem;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      cursor: pointer;
+      box-shadow: 0 6px 16px rgba(5, 150, 105, 0.28);
+      transition: transform var(--transition-fast), box-shadow var(--transition-fast), filter var(--transition-fast);
+    }
+
+    .btn-wa-action:hover {
+      transform: translateY(-2px);
+      filter: brightness(1.05);
+      box-shadow: 0 8px 20px rgba(5, 150, 105, 0.36);
+    }
+
+    .btn-wa-action.kdmp-order {
+      background: linear-gradient(135deg, var(--brand-red) 0%, var(--brand-red-dark) 100%);
+      box-shadow: 0 6px 16px rgba(220, 38, 38, 0.26);
+    }
+
+    /* ==========================================================================
+       10. BAGIAN 5: PORTAL ADMIN (HIDDEN SPA VIEW & CRUD DASHBOARD)
+       ========================================================================== */
+    .spa-view-hidden {
+      display: none !important;
+    }
+
+    .admin-header-bar {
+      padding: 22px 26px;
+      margin-bottom: 24px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .admin-tabs-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 22px;
+    }
+
+    .admin-tab-btn {
+      padding: 10px 18px;
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--glass-border);
+      background: var(--glass-bg);
+      color: var(--text-color);
+      font-weight: 700;
+      font-size: 0.86rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all var(--transition-fast);
+    }
+
+    .admin-tab-btn.active {
+      background: linear-gradient(135deg, var(--brand-red), var(--brand-red-dark));
+      color: #ffffff;
+      border-color: transparent;
+      box-shadow: 0 6px 16px rgba(220, 38, 38, 0.28);
+    }
+
+    .admin-workspace-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.55fr;
+      gap: 22px;
+      align-items: start;
+    }
+
+    .admin-form-card,
+    .admin-table-card {
+      padding: 24px;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+      color: var(--text-color);
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 10px 13px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--input-border);
+      background: var(--input-bg);
+      color: var(--text-color);
+      font-family: inherit;
+      font-size: 0.88rem;
+      outline: none;
+      transition: border-color var(--transition-fast);
+    }
+
+    .form-control:focus {
+      border-color: var(--brand-emerald);
+    }
+
+    textarea.form-control {
+      min-height: 86px;
+      resize: vertical;
+    }
+
+    .photo-upload-dropzone {
+      border: 2px dashed var(--input-border);
+      border-radius: var(--radius-md);
+      padding: 14px;
+      text-align: center;
+      background: var(--input-bg);
+      cursor: pointer;
+      transition: border-color var(--transition-fast);
+    }
+
+    .photo-upload-dropzone:hover {
+      border-color: var(--brand-emerald);
+    }
+
+    .photo-preview-box {
+      margin-top: 10px;
+      border-radius: 10px;
+      overflow: hidden;
+      max-height: 150px;
+      border: 1px solid var(--glass-border);
+      display: none;
+    }
+
+    .photo-preview-box.active {
+      display: block;
+    }
+
+    .photo-preview-box img {
+      width: 100%;
+      height: 140px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .btn-primary {
+      padding: 11px 18px;
+      border-radius: var(--radius-md);
+      border: none;
+      background: linear-gradient(135deg, var(--brand-emerald), var(--brand-emerald-dark));
+      color: #ffffff;
+      font-weight: 700;
+      font-size: 0.88rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all var(--transition-fast);
+    }
+
+    .btn-primary:hover {
+      filter: brightness(1.06);
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      padding: 10px 16px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--input-border);
+      background: var(--input-bg);
+      color: var(--text-color);
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .btn-danger {
+      padding: 7px 12px;
+      border-radius: 9px;
+      border: 1px solid rgba(239, 68, 68, 0.35);
+      background: rgba(239, 68, 68, 0.12);
+      color: var(--brand-red);
+      font-weight: 700;
+      font-size: 0.78rem;
+      cursor: pointer;
+    }
+
+    .admin-list-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 14px;
+      border-radius: var(--radius-md);
+      background: var(--input-bg);
+      border: 1px solid var(--glass-border);
+      margin-bottom: 10px;
+    }
+
+    .admin-item-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+      flex: 1;
+    }
+
+    .admin-item-thumb {
+      width: 52px;
+      height: 52px;
+      border-radius: 10px;
+      object-fit: cover;
+      flex-shrink: 0;
+      border: 1px solid var(--glass-border);
+    }
+
+    .admin-item-text h4 {
+      font-size: 0.92rem;
+      font-weight: 700;
+      margin-bottom: 2px;
+    }
+
+    .admin-item-text p {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .status-chip {
+      display: inline-block;
+      padding: 3px 9px;
+      border-radius: var(--radius-pill);
+      font-size: 0.7rem;
+      font-weight: 700;
+    }
+
+    .status-chip.aktif {
+      background: var(--badge-emerald-bg);
+      color: var(--badge-emerald-text);
+    }
+
+    .status-chip.draft {
+      background: rgba(245, 158, 11, 0.18);
+      color: var(--brand-gold);
+    }
+
+    .admin-item-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    /* ==========================================================================
+       11. MODAL LOGIN GLASSMORPHISM & TOAST NOTIFICATION
+       ========================================================================== */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 2000;
+      background: rgba(15, 23, 42, 0.55);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+    }
+
+    .modal-card {
+      width: 100%;
+      max-width: 430px;
+      padding: 28px;
+      position: relative;
+    }
+
+    .toast-container {
+      position: fixed;
+      bottom: 22px;
+      right: 22px;
+      z-index: 3000;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-width: 360px;
+    }
+
+    .toast-msg {
+      padding: 13px 18px;
+      border-radius: var(--radius-md);
+      background: var(--glass-bg-strong);
+      backdrop-filter: blur(14px);
+      border-left: 4px solid var(--brand-emerald);
+      box-shadow: var(--glass-shadow);
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-color);
+      animation: slideInToast 0.25s ease;
+    }
+
+    .toast-msg.error {
+      border-left-color: var(--brand-red);
+    }
+
+    @keyframes slideInToast {
+      from { transform: translateY(16px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    /* ==========================================================================
+       12. FOOTER & ARCHITECTURE DRAWER
+       ========================================================================== */
+    .site-footer {
+      margin-top: 48px;
+      padding: 24px 28px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      font-size: 0.84rem;
+      color: var(--text-muted);
+    }
+
+    .schema-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.82rem;
+      margin-top: 10px;
+    }
+
+    .schema-table th,
+    .schema-table td {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--glass-border);
+      text-align: left;
+    }
+
+    .schema-table th {
+      font-weight: 700;
+      color: var(--brand-emerald);
+    }
+
+    @media (max-width: 900px) {
+      .hero-welcome-card {
+        grid-template-columns: 1fr;
+        padding: 24px 20px;
+      }
+      .admin-workspace-grid {
+        grid-template-columns: 1fr;
+      }
+      .nav-links-group {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Background Abstrak & Siluet Lanskap Desa Sumberjo -->
+  <div class="ambient-canvas" aria-hidden="true">
+    <div class="ambient-orb orb-1"></div>
+    <div class="ambient-orb orb-2"></div>
+    <div class="ambient-orb orb-3"></div>
+  </div>
+  <svg class="landscape-silhouette" viewBox="0 0 1440 220" preserveAspectRatio="none" aria-hidden="true">
+    <path fill="currentColor" d="M0,160L80,149.3C160,139,320,117,480,122.7C640,128,800,160,960,165.3C1120,171,1280,149,1360,138.7L1440,128L1440,220L1360,220C1280,220,1120,220,960,220C800,220,640,220,480,220C320,220,160,220,80,220L0,220Z"></path>
+  </svg>
+
+  <!-- Loading Spinner Modern saat Sinkronisasi Google Sheets -->
+  <div id="loadingOverlay" class="loading-overlay">
+    <div class="spinner-ring"></div>
+    <div style="text-align:center;">
+      <strong style="font-size:1rem; display:block;">Memuat Data KDMP Desa Sumberjo...</strong>
+      <span id="loadingSubtext" style="font-size:0.82rem; color:var(--text-muted);">Menghubungkan ke Database Google Sheets</span>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div id="toastContainer" class="toast-container" aria-live="polite"></div>
+
+  <div class="app-container">
+    <!-- ========================================================================
+         TOP GLASS NAVBAR (DENGAN TRIK RAHASIA 3X KLIK LOGO & TOGGLE TEMA)
+         ======================================================================== -->
+    <header class="glass-panel top-navbar">
+      <div id="secretLogoTrigger" class="brand-cluster">
+        <div class="brand-logo" id="brandLogoContainer">
+          <span id="brandLogoText">MP</span>
+          <img id="brandLogoImg" src="" alt="Logo KDMP Sumberjo" style="display:none;">
+          <span id="secretTapCounter" class="secret-tap-badge" style="display:none;">1</span>
+        </div>
+        <div class="brand-titles">
+          <h1 id="navBrandTitle">KDMP Desa Sumberjo</h1>
+          <p id="navBrandSubtitle">Koperasi Desa Merah Putih • Lamongan</p>
+        </div>
+      </div>
+
+      <nav class="nav-links-group" aria-label="Navigasi Utama">
+        <button type="button" class="nav-pill-btn active" data-scroll="sectionSambutan">Sambutan</button>
+        <button type="button" class="nav-pill-btn" data-scroll="sectionLinks">Tautan Cepat</button>
+        <button type="button" class="nav-pill-btn" data-scroll="sectionProduk">Produk KDMP</button>
+        <button type="button" class="nav-pill-btn" data-scroll="sectionUmkm">Potensi UMKM</button>
+      </nav>
+
+      <div class="nav-actions">
+        <button type="button" id="btnQuickAdminSwitch" class="mode-indicator-btn spa-view-hidden">
+          <span id="modeIndicatorLabel">⚡ Dashboard Admin</span>
+        </button>
+        <button type="button" id="themeToggleBtn" class="theme-toggle-btn" aria-label="Ganti Tema Terang atau Gelap" title="Ganti Tema Terang / Gelap">
+          <span id="themeIconDisplay" style="font-size:1.15rem;">🌙</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- ========================================================================
+         HALAMAN PUBLIK (UNTUK MASYARAKAT WARGA DESA SUMBERJO)
+         ======================================================================== -->
+    <main id="publicPortalView">
+
+      <!-- BAGIAN 1: HEADER & SAMBUTAN TOKOH (DENGAN FOTO SAMBUTAN DINAMIS) -->
+      <section id="sectionSambutan" class="glass-panel hero-welcome-card">
+        <div>
+          <div class="hero-badge-row">
+            <span class="pill-badge">🇮🇩 Koperasi Desa Merah Putih</span>
+            <span class="pill-badge emerald">🌾 Desa Sumberjo Mandiri</span>
+          </div>
+          <h2 id="heroWelcomeTitle" class="hero-title">Sinergi Ekonomi Kerakyatan & Etalase Digital Desa Sumberjo</h2>
+          <p id="heroWelcomeBody" class="hero-welcome-text">
+            Selamat datang di Portal Digital Koperasi Desa Merah Putih (KDMP) Desa Sumberjo. Melalui sinergi ekonomi kerakyatan, kami menghadirkan produk unggulan koperasi, layanan kemitraan agribisnis, serta etalase produk UMKM dan potensi terbaik warga Desa Sumberjo dalam satu layanan terpadu.
+          </p>
+          <div class="hero-speaker-box">
+            <div class="speaker-avatar" id="heroSpeakerAvatarWrap">
+              <span id="heroSpeakerInitials">KS</span>
+              <img id="heroSpeakerThumbImg" src="" alt="Foto Tokoh Sambutan" style="display:none;">
+            </div>
+            <div class="speaker-meta">
+              <strong id="heroSpeakerName">Ketua Pengurus KDMP & Kepala Desa Sumberjo</strong>
+              <span id="heroSpeakerRole">Pemerintah Desa & Pengurus Koperasi Desa Merah Putih Sumberjo</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-right-column">
+          <div class="hero-portrait-frame">
+            <img id="heroWelcomePhotoImg" src="" alt="Foto Sambutan KDMP Desa Sumberjo">
+            <div class="hero-portrait-caption">
+              <span id="heroPhotoCaptionText">Ketua Pengurus KDMP & Kepala Desa Sumberjo</span>
+              <span class="pill-badge emerald" style="font-size:0.65rem; padding:3px 8px;">Sambutan Resmi</span>
+            </div>
+          </div>
+
+          <div class="hero-stats-panel">
+            <div class="stat-mini-card">
+              <div id="statCountProduk" class="stat-value">5</div>
+              <div class="stat-label">Produk Unggulan KDMP</div>
+            </div>
+            <div class="stat-mini-card emerald">
+              <div id="statCountUmkm" class="stat-value">5</div>
+              <div class="stat-label">Mitra UMKM & Potensi Desa</div>
+            </div>
+            <div class="stat-mini-card emerald">
+              <div id="statCountLinks" class="stat-value">5</div>
+              <div class="stat-label">Layanan & Tautan Aktif</div>
+            </div>
+            <div class="stat-mini-card">
+              <div class="stat-value">24/7</div>
+              <div class="stat-label">Pemesanan WhatsApp Cepat</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- BAGIAN 2: TAUTAN CEPAT (FLOATING QUICK LINKS) -->
+      <section id="sectionLinks" class="section-block">
+        <div class="section-header">
+          <div class="section-title-wrap">
+            <h2>🔗 Tautan Cepat & Layanan Digital</h2>
+            <p>Akses instan ke portal layanan koperasi, berita desa, pendaftaran mitra, dan media sosial resmi</p>
+          </div>
+        </div>
+        <div id="publicLinksGrid" class="quick-links-grid"></div>
+      </section>
+
+      <!-- BAGIAN 3: GALERI PRODUK UNGGULAN KDMP -->
+      <section id="sectionProduk" class="section-block">
+        <div class="section-header">
+          <div class="section-title-wrap">
+            <h2>🛍️ Galeri Produk Unggulan KDMP Sumberjo</h2>
+            <p>Produk resmi Koperasi Desa Merah Putih — klik tombol untuk memesan langsung via WhatsApp</p>
+          </div>
+          <div class="search-input-wrap">
+            <span class="search-icon">🔍</span>
+            <input type="search" id="searchProdukInput" class="search-input" placeholder="Cari produk KDMP...">
+          </div>
+        </div>
+        <div id="publicProdukGrid" class="catalog-grid"></div>
+      </section>
+
+      <!-- BAGIAN 4: POTENSI DESA & UMKM WARGA SUMBERJO -->
+      <section id="sectionUmkm" class="section-block">
+        <div class="section-header">
+          <div class="section-title-wrap">
+            <h2>🌱 Potensi Desa & Galeri UMKM Warga Sumberjo</h2>
+            <p>Pameran hasil bumi, agrowisata, kuliner, dan kriya unggulan warga — terhubung langsung ke WhatsApp pengelola</p>
+          </div>
+          <div class="search-input-wrap">
+            <span class="search-icon">🔍</span>
+            <input type="search" id="searchUmkmInput" class="search-input" placeholder="Cari UMKM atau pengelola...">
+          </div>
+        </div>
+        <div id="publicUmkmGrid" class="catalog-grid"></div>
+      </section>
+
+    </main>
+
+    <!-- ========================================================================
+         PORTAL ADMIN (DISEMBUNYIKAN DI DALAM SPA — CRUD + UPLOAD FOTO BASE64)
+         ======================================================================== -->
+    <section id="adminPortalView" class="spa-view-hidden" aria-label="Dashboard Portal Admin">
+      <div class="glass-panel admin-header-bar">
+        <div>
+          <span class="pill-badge">⚡ Panel Kendali Google Sheets & Drive</span>
+          <h2 style="font-family:'Plus Jakarta Sans',sans-serif; font-size:1.45rem; margin-top:6px;">
+            Dashboard Admin KDMP Desa Sumberjo
+          </h2>
+          <p style="font-size:0.84rem; color:var(--text-muted);">
+            Setiap perubahan langsung memperbarui baris di Google Sheets & mengunggah foto Base64 ke Google Drive tanpa reload.
+          </p>
+        </div>
+        <div style="display:flex; flex-wrap:wrap; gap:10px;">
+          <button type="button" id="btnBackToPublic" class="btn-secondary">🌐 Lihat Halaman Publik</button>
+          <button type="button" id="btnAdminLogout" class="btn-danger" style="padding:10px 16px;">Keluar (Logout)</button>
+        </div>
+      </div>
+
+      <!-- Navigasi Tab 5 Sheet Database -->
+      <div class="admin-tabs-nav" role="tablist">
+        <button type="button" class="admin-tab-btn active" data-admin-tab="settings">🎙️ 1. Sambutan, Foto & Settings</button>
+        <button type="button" class="admin-tab-btn" data-admin-tab="links">🔗 2. Sheet Links</button>
+        <button type="button" class="admin-tab-btn" data-admin-tab="produk">🛍️ 3. Sheet Produk_KDMP</button>
+        <button type="button" class="admin-tab-btn" data-admin-tab="umkm">🌱 4. Sheet Potensi_UMKM</button>
+        <button type="button" class="admin-tab-btn" data-admin-tab="security">🔐 5. Sheet Admin & Struktur DB</button>
+      </div>
+
+      <!-- TAB 1: CRUD PRODUK KDMP + AUTO UPLOAD FOTO -->
+      <div id="adminTabProduk" class="admin-tab-pane spa-view-hidden">
+        <div class="admin-workspace-grid">
+          <div class="glass-panel admin-form-card">
+            <h3 id="formProdukHeading" style="margin-bottom:14px; font-size:1.05rem;">➕ Tambah Produk Unggulan KDMP</h3>
+            <form id="formProdukCrud">
+              <input type="hidden" id="produkIdInput">
+              <input type="hidden" id="produkDriveIdInput">
+              <div class="form-group">
+                <label for="produkNamaInput">Nama Produk (Cth: Kaos Seragam KDKMP)</label>
+                <input type="text" id="produkNamaInput" class="form-control" required placeholder="Masukkan nama produk...">
+              </div>
+              <div class="form-group">
+                <label for="produkHargaInput">Harga (Rp)</label>
+                <input type="number" id="produkHargaInput" class="form-control" required min="0" step="500" placeholder="85000">
+              </div>
+              <div class="form-group">
+                <label for="produkWaInput">No. WhatsApp Pemesanan (Kosongkan untuk WA Default)</label>
+                <input type="text" id="produkWaInput" class="form-control" placeholder="6281234567890">
+              </div>
+              <div class="form-group">
+                <label for="produkDescInput">Deskripsi Produk</label>
+                <textarea id="produkDescInput" class="form-control" required placeholder="Jelaskan bahan, ukuran, atau keunggulan produk..."></textarea>
+              </div>
+              <div class="form-group">
+                <label for="produkStatusInput">Status Tampil</label>
+                <select id="produkStatusInput" class="form-control">
+                  <option value="Aktif">Aktif (Tampil di Publik)</option>
+                  <option value="Draft">Draft (Sembunyikan Sementara)</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="produkPhotoFile">Pilih Foto Produk (Otomatis Base64 → Google Drive)</label>
+                <div class="photo-upload-dropzone" id="produkDropzoneTrigger">
+                  <input type="file" id="produkPhotoFile" accept="image/*" style="display:none;">
+                  <span style="font-size:0.84rem; font-weight:600; color:var(--brand-emerald);">📷 Klik untuk Pilih Foto dari HP / Laptop</span>
+                  <small style="display:block; font-size:0.73rem; color:var(--text-muted); margin-top:4px;">
+                    Otomatis dikompresi, dikirim ke Apps Script, disimpan di Folder Drive Publik & dicatat ID-nya
+                  </small>
+                </div>
+                <div id="produkPhotoPreviewWrap" class="photo-preview-box">
+                  <img id="produkPhotoPreviewImg" src="" alt="Preview Foto Produk">
+                </div>
+              </div>
+              <div style="display:flex; gap:8px; margin-top:16px;">
+                <button type="submit" class="btn-primary" style="flex:1;">💾 Simpan ke Sheet Produk_KDMP</button>
+                <button type="button" id="btnResetProdukForm" class="btn-secondary">Batal</button>
+              </div>
+            </form>
+          </div>
+
+          <div class="glass-panel admin-table-card">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+              <h3 style="font-size:1.05rem;">📋 Daftar Baris di Sheet Produk_KDMP</h3>
+              <span id="adminProdukCountLabel" class="pill-badge">0 Baris</span>
+            </div>
+            <div id="adminProdukListContainer"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 2: CRUD POTENSI UMKM + AUTO UPLOAD FOTO -->
+      <div id="adminTabUmkm" class="admin-tab-pane spa-view-hidden">
+        <div class="admin-workspace-grid">
+          <div class="glass-panel admin-form-card">
+            <h3 id="formUmkmHeading" style="margin-bottom:14px; font-size:1.05rem;">➕ Tambah Potensi Desa / UMKM</h3>
+            <form id="formUmkmCrud">
+              <input type="hidden" id="umkmIdInput">
+              <input type="hidden" id="umkmDriveIdInput">
+              <div class="form-group">
+                <label for="umkmNamaInput">Nama UMKM / Potensi (Cth: Agrowisata Petik Melon)</label>
+                <input type="text" id="umkmNamaInput" class="form-control" required placeholder="Masukkan nama UMKM atau potensi desa...">
+              </div>
+              <div class="form-group">
+                <label for="umkmPengelolaInput">Pengelola / Dusun / Kelompok</label>
+                <input type="text" id="umkmPengelolaInput" class="form-control" required placeholder="Cth: POKDARWIS & BUMDes Sumberjo">
+              </div>
+              <div class="form-group">
+                <label for="umkmWaInput">No. WhatsApp Kontak Penjual</label>
+                <input type="text" id="umkmWaInput" class="form-control" required placeholder="6281330112233">
+              </div>
+              <div class="form-group">
+                <label for="umkmDescInput">Deskripsi Singkat</label>
+                <textarea id="umkmDescInput" class="form-control" required placeholder="Jelaskan produk atau daya tarik UMKM warga..."></textarea>
+              </div>
+              <div class="form-group">
+                <label for="umkmStatusInput">Status Tampil</label>
+                <select id="umkmStatusInput" class="form-control">
+                  <option value="Aktif">Aktif (Tampil di Publik)</option>
+                  <option value="Draft">Draft (Sembunyikan Sementara)</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="umkmPhotoFile">Pilih Foto UMKM (Otomatis Base64 → Google Drive)</label>
+                <div class="photo-upload-dropzone" id="umkmDropzoneTrigger">
+                  <input type="file" id="umkmPhotoFile" accept="image/*" style="display:none;">
+                  <span style="font-size:0.84rem; font-weight:600; color:var(--brand-emerald);">📷 Klik untuk Pilih Foto UMKM</span>
+                  <small style="display:block; font-size:0.73rem; color:var(--text-muted); margin-top:4px;">
+                    Otomatis dikonversi ke Base64 & disimpan ke Google Drive
+                  </small>
+                </div>
+                <div id="umkmPhotoPreviewWrap" class="photo-preview-box">
+                  <img id="umkmPhotoPreviewImg" src="" alt="Preview Foto UMKM">
+                </div>
+              </div>
+              <div style="display:flex; gap:8px; margin-top:16px;">
+                <button type="submit" class="btn-primary" style="flex:1;">💾 Simpan ke Sheet Potensi_UMKM</button>
+                <button type="button" id="btnResetUmkmForm" class="btn-secondary">Batal</button>
+              </div>
+            </form>
+          </div>
+
+          <div class="glass-panel admin-table-card">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+              <h3 style="font-size:1.05rem;">📋 Daftar Baris di Sheet Potensi_UMKM</h3>
+              <span id="adminUmkmCountLabel" class="pill-badge emerald">0 Baris</span>
+            </div>
+            <div id="adminUmkmListContainer"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 3: CRUD LINKS (TAUTAN PENTING) -->
+      <div id="adminTabLinks" class="admin-tab-pane spa-view-hidden">
+        <div class="admin-workspace-grid">
+          <div class="glass-panel admin-form-card">
+            <h3 id="formLinkHeading" style="margin-bottom:14px; font-size:1.05rem;">➕ Tambah Tautan Cepat</h3>
+            <form id="formLinkCrud">
+              <input type="hidden" id="linkIdInput">
+              <div class="form-group">
+                <label for="linkTitleInput">Judul Tautan</label>
+                <input type="text" id="linkTitleInput" class="form-control" required placeholder="Cth: Portal Berita Desa Sumberjo">
+              </div>
+              <div class="form-group">
+                <label for="linkUrlInput">URL Tujuan</label>
+                <input type="url" id="linkUrlInput" class="form-control" required placeholder="https://...">
+              </div>
+              <div class="form-group">
+                <label for="linkIconInput">Pilih Ikon</label>
+                <select id="linkIconInput" class="form-control">
+                  <option value="newspaper">📰 Portal Berita / Informasi</option>
+                  <option value="store">🏪 Pendaftaran UMKM / Katalog</option>
+                  <option value="instagram">📸 Instagram / Sosial Media</option>
+                  <option value="wallet">💳 Layanan Simpan Pinjam / PPOB</option>
+                  <option value="video">🎬 Video YouTube Desa</option>
+                  <option value="file-text">📄 Dokumen / Laporan RAT</option>
+                  <option value="link">🔗 Tautan Umum</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="linkStatusInput">Status (Aktif / Draft)</label>
+                <select id="linkStatusInput" class="form-control">
+                  <option value="Aktif">Aktif (Tampil di Publik)</option>
+                  <option value="Draft">Draft (Sembunyikan Sementara)</option>
+                </select>
+              </div>
+              <div style="display:flex; gap:8px; margin-top:16px;">
+                <button type="submit" class="btn-primary" style="flex:1;">💾 Simpan ke Sheet Links</button>
+                <button type="button" id="btnResetLinkForm" class="btn-secondary">Batal</button>
+              </div>
+            </form>
+          </div>
+
+          <div class="glass-panel admin-table-card">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+              <h3 style="font-size:1.05rem;">📋 Daftar Baris di Sheet Links</h3>
+              <span id="adminLinksCountLabel" class="pill-badge">0 Baris</span>
+            </div>
+            <div id="adminLinksListContainer"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 4: SHEET SETTINGS (EDITOR SAMBUTAN, FOTO TOKOH, LOGO & PENGATURAN GLOBAL) -->
+      <div id="adminTabSettings" class="admin-tab-pane">
+        <form id="formGlobalSettings">
+          <div class="admin-workspace-grid">
+            <!-- Panel Kiri: Editor Teks & Foto Sambutan Tokoh -->
+            <div class="glass-panel admin-form-card">
+              <h3 style="margin-bottom:6px; font-size:1.08rem;">🎙️ Editor Sambutan Utama & Foto Tokoh</h3>
+              <p style="font-size:0.82rem; color:var(--text-muted); margin-bottom:16px;">
+                Ubah judul, isi pidato sambutan, nama tokoh, serta unggah foto tokoh/kegiatan sambutan (otomatis disimpan ke Google Drive & <code>Sheet Settings</code>).
+              </p>
+              <input type="hidden" id="setIdFotoSambutan">
+              <input type="hidden" id="setIdLogoWeb">
+
+              <div class="form-group">
+                <label for="setJudulSambutan">Judul Utama Sambutan (Parameter: Judul_Sambutan)</label>
+                <input type="text" id="setJudulSambutan" class="form-control" required placeholder="Cth: Sinergi Ekonomi Kerakyatan & Etalase Digital Desa Sumberjo">
+              </div>
+
+              <div class="form-group">
+                <label for="setSambutanUtama">Isi Teks Sambutan Utama (Parameter: Sambutan_Utama)</label>
+                <textarea id="setSambutanUtama" class="form-control" style="min-height:115px;" required></textarea>
+              </div>
+
+              <div class="form-group">
+                <label for="setTokohSambutan">Nama Tokoh Sambutan (Parameter: Tokoh_Sambutan)</label>
+                <input type="text" id="setTokohSambutan" class="form-control" required placeholder="Cth: H. Nama Kepala Desa / Ketua KDMP">
+              </div>
+
+              <div class="form-group">
+                <label for="setJabatanSambutan">Jabatan Tokoh (Parameter: Jabatan_Sambutan)</label>
+                <input type="text" id="setJabatanSambutan" class="form-control" required placeholder="Cth: Kepala Desa Sumberjo & Ketua Pengurus KDMP">
+              </div>
+
+              <div class="form-group">
+                <label for="sambutanPhotoFile">Foto Tokoh / Banner Sambutan (Base64 → Google Drive)</label>
+                <div class="photo-upload-dropzone" id="sambutanDropzoneTrigger">
+                  <input type="file" id="sambutanPhotoFile" accept="image/*" style="display:none;">
+                  <span style="font-size:0.84rem; font-weight:600; color:var(--brand-emerald);">📷 Klik untuk Pilih / Ganti Foto Sambutan</span>
+                  <small style="display:block; font-size:0.73rem; color:var(--text-muted); margin-top:4px;">
+                    Otomatis dikonversi ke Base64, diunggah ke Folder Drive Publik, dan ditampilkan di Card Sambutan
+                  </small>
+                </div>
+                <div id="sambutanPhotoPreviewWrap" class="photo-preview-box active" style="max-height:190px;">
+                  <img id="sambutanPhotoPreviewImg" src="" alt="Preview Foto Sambutan" style="height:175px;">
+                </div>
+              </div>
+            </div>
+
+            <!-- Panel Kanan: Identitas Web, Logo, Nomor WA Default & Footer -->
+            <div class="glass-panel admin-table-card">
+              <h3 style="margin-bottom:6px; font-size:1.08rem;">⚙️ Identitas Web, Logo & Kontak Default</h3>
+              <p style="font-size:0.82rem; color:var(--text-muted); margin-bottom:16px;">
+                Pengaturan header situs, logo koperasi, nomor WhatsApp utama, dan teks footer pada <code>Sheet Settings</code>.
+              </p>
+
+              <div class="form-group">
+                <label for="setNamaWeb">Nama Web (Parameter: Nama_Web)</label>
+                <input type="text" id="setNamaWeb" class="form-control" required>
+              </div>
+
+              <div class="form-group">
+                <label for="setSubjudulWeb">Subjudul Header (Parameter: Subjudul_Web)</label>
+                <input type="text" id="setSubjudulWeb" class="form-control" required>
+              </div>
+
+              <div class="form-group">
+                <label for="logoPhotoFile">Logo Koperasi / Desa di Header (Opsional — Base64 → Drive)</label>
+                <div class="photo-upload-dropzone" id="logoDropzoneTrigger">
+                  <input type="file" id="logoPhotoFile" accept="image/*" style="display:none;">
+                  <span style="font-size:0.84rem; font-weight:600; color:var(--brand-emerald);">🛡️ Klik untuk Unggah Logo Koperasi / Desa</span>
+                  <small style="display:block; font-size:0.73rem; color:var(--text-muted); margin-top:4px;">
+                    Jika dikosongkan, sistem menampilkan lencana inisial "MP" Merah Putih
+                  </small>
+                </div>
+                <div id="logoPhotoPreviewWrap" class="photo-preview-box" style="max-height:110px;">
+                  <img id="logoPhotoPreviewImg" src="" alt="Preview Logo Web" style="height:95px; object-fit:contain; padding:8px;">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="setWaDefault">Nomor WA Default Koperasi (Parameter: Nomor_WA_Default — Format 628xxx)</label>
+                <input type="text" id="setWaDefault" class="form-control" required placeholder="6281234567890">
+              </div>
+
+              <div class="form-group">
+                <label for="setPesanFooter">Pesan Footer (Parameter: Pesan_Footer)</label>
+                <input type="text" id="setPesanFooter" class="form-control" required>
+              </div>
+
+              <div style="margin-top:20px;">
+                <button type="submit" class="btn-primary" style="width:100%; padding:13px 20px; font-size:0.94rem;">
+                  💾 Simpan Sambutan, Foto & Pengaturan ke Sheet Settings
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <!-- TAB 5: SHEET ADMIN & BLUEPRINT DATABASE -->
+      <div id="adminTabSecurity" class="admin-tab-pane spa-view-hidden">
+        <div class="admin-workspace-grid">
+          <div class="glass-panel admin-form-card">
+            <h3 style="margin-bottom:8px; font-size:1.05rem;">🔐 Sheet 5: Admin (Keamanan & Hash SHA-256)</h3>
+            <p style="font-size:0.82rem; color:var(--text-muted); margin-bottom:16px;">
+              Perbarui kredensial login Admin. Password otomatis di-hash dengan algoritma SHA-256 sebelum disimpan ke kolom <code>Password</code>.
+            </p>
+            <form id="formAdminSecurity">
+              <div class="form-group">
+                <label for="secNewUsername">Username Baru</label>
+                <input type="text" id="secNewUsername" class="form-control" value="admin" required>
+              </div>
+              <div class="form-group">
+                <label for="secNewPassword">Password Baru</label>
+                <input type="password" id="secNewPassword" class="form-control" placeholder="Minimal 6 karakter..." required>
+              </div>
+              <button type="submit" class="btn-primary">🔒 Simpan & Enkripsi ke Sheet Admin</button>
+            </form>
+
+            <div style="margin-top:22px; padding-top:18px; border-top:1px solid var(--glass-border);">
+              <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; margin-bottom:8px;">
+                <h3 style="font-size:1.02rem;">🌐 Koneksi API Backend GAS (Vercel / GitHub)</h3>
+                <span id="apiConnectionBadge" class="status-chip draft">Mode Lokal / Demo</span>
+              </div>
+              <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:12px;">
+                Saat di-hosting di <strong>Vercel, Netlify, atau GitHub Pages</strong>, tempelkan URL Deployment Google Apps Script (<code>https://script.google.com/macros/s/.../exec</code>) di bawah ini atau isi konstanta <code>GAS_WEB_APP_URL</code> di dalam kode <code>index.html</code>.
+              </p>
+              <form id="formGasApiEndpoint">
+                <div class="form-group">
+                  <label for="gasApiUrlInput">URL Web-App Google Apps Script (Berakhiran /exec)</label>
+                  <input type="url" id="gasApiUrlInput" class="form-control" placeholder="https://script.google.com/macros/s/AKfycb.../exec">
+                </div>
+                <div style="display:flex; flex-wrap:wrap; gap:8px;">
+                  <button type="submit" class="btn-primary" style="flex:1;">🔗 Simpan & Sinkronkan API</button>
+                  <button type="button" id="btnClearGasApiUrl" class="btn-secondary">Reset</button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <div class="glass-panel admin-table-card">
+            <h3 style="margin-bottom:8px; font-size:1.05rem;">📊 Skema 5 Sheet Google Sheets (Master Blueprint)</h3>
+            <p style="font-size:0.82rem; color:var(--text-muted);">
+              Fungsi <code>setupDatabase()</code> pada <code>Code.gs</code> otomatis membuat kelima sheet ini beserta header kolomnya:
+            </p>
+            <table class="schema-table">
+              <thead>
+                <tr>
+                  <th>Nama Sheet</th>
+                  <th>Struktur Kolom</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>1. Settings</strong></td>
+                  <td><code>Parameter | Nilai</code></td>
+                </tr>
+                <tr>
+                  <td><strong>2. Links</strong></td>
+                  <td><code>ID | Judul Tautan | URL | Ikon | Status</code></td>
+                </tr>
+                <tr>
+                  <td><strong>3. Produk_KDMP</strong></td>
+                  <td><code>ID | Nama Produk | Harga | Deskripsi | ID_Foto_Drive | No_WA_Pemesanan | Status</code></td>
+                </tr>
+                <tr>
+                  <td><strong>4. Potensi_UMKM</strong></td>
+                  <td><code>ID | Nama | Pengelola/Desa | Deskripsi Singkat | ID_Foto_Drive | No_WA_Kontak | Status</code></td>
+                </tr>
+                <tr>
+                  <td><strong>5. Admin</strong></td>
+                  <td><code>Username | Password (SHA-256) | Token_Sesi</code></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================
+         MODAL LOGIN PORTAL ADMIN (DENGAN EFEK KACA GLASSMORPHISM)
+         ======================================================================== -->
+    <div id="adminLoginModal" class="modal-backdrop spa-view-hidden" role="dialog" aria-modal="true" aria-labelledby="loginModalTitle">
+      <div class="glass-panel modal-card">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+          <span class="pill-badge">🔐 Verifikasi Sheet Admin</span>
+          <button type="button" id="btnCloseLoginModal" class="btn-secondary" style="padding:5px 10px;">✕</button>
+        </div>
+        <h3 id="loginModalTitle" style="font-family:'Plus Jakarta Sans',sans-serif; font-size:1.3rem; margin-bottom:6px;">
+          Login Portal Admin KDMP
+        </h3>
+        <p style="font-size:0.83rem; color:var(--text-muted); margin-bottom:18px;">
+          Akses rahasia terbuka! Masukkan kredensial yang terdaftar pada <strong>Sheet Admin</strong>.
+          <br><span style="font-size:0.77rem; color:var(--brand-emerald);">(Demo Default: Username <code>admin</code> / Password <code>sumberjo2026</code>)</span>
+        </p>
+        <form id="formAdminLogin">
+          <div class="form-group">
+            <label for="loginUsernameInput">Username</label>
+            <input type="text" id="loginUsernameInput" class="form-control" value="admin" required autocomplete="username">
+          </div>
+          <div class="form-group">
+            <label for="loginPasswordInput">Password</label>
+            <input type="password" id="loginPasswordInput" class="form-control" value="sumberjo2026" required autocomplete="current-password">
+          </div>
+          <div style="display:flex; gap:10px; margin-top:18px;">
+            <button type="submit" class="btn-primary" style="flex:1;">Masuk ke Dashboard</button>
+            <button type="button" id="btnFillDemoCreds" class="btn-secondary">Isi Default</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- ========================================================================
+         FOOTER
+         ======================================================================== -->
+    <footer class="glass-panel site-footer">
+      <div id="footerTextDisplay">
+        © 2026 Koperasi Desa Merah Putih (KDMP) Desa Sumberjo, Kec. Lamongan, Kab. Lamongan. Membangun Desa Mandiri & Sejahtera.
+      </div>
+      <div style="display:flex; align-items:center; gap:12px;">
+        <span style="font-size:0.8rem; font-weight:600; color:var(--brand-emerald);">🇮🇩 Koperasi Desa Merah Putih • Desa Sumberjo</span>
+      </div>
+    </footer>
+  </div>
+
+  <!-- ==========================================================================
+       VANILLA JAVASCRIPT: SPA ROUTER, GAS BRIDGE, BASE64 UPLOADER & CRUD ENGINE
+       ========================================================================== -->
+  <script>
+    (function() {
+      'use strict';
+
+      /* ------------------------------------------------------------------------
+         1. GENERATOR ILUSTRASI SVG LOKAL (UNTUK PRODUK & UMKM DEMO TANPA INTERNET)
+         ------------------------------------------------------------------------ */
+      function createSvgIllustrationDataUri(title, subtitle, bgHex1, bgHex2, emojiIcon) {
+        var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="640" height="400" viewBox="0 0 640 400">' +
+          '<defs><linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">' +
+          '<stop offset="0%" stop-color="' + bgHex1 + '"/>' +
+          '<stop offset="100%" stop-color="' + bgHex2 + '"/>' +
+          '</linearGradient></defs>' +
+          '<rect width="640" height="400" fill="url(#g)"/>' +
+          '<circle cx="540" cy="80" r="110" fill="rgba(255,255,255,0.12)"/>' +
+          '<circle cx="90" cy="340" r="130" fill="rgba(255,255,255,0.08)"/>' +
+          '<rect x="36" y="36" width="170" height="34" rx="17" fill="rgba(255,255,255,0.22)"/>' +
+          '<text x="121" y="58" font-family="Inter, sans-serif" font-size="13" font-weight="700" fill="#ffffff" text-anchor="middle">KDMP DESA SUMBERJO</text>' +
+          '<text x="320" y="185" font-family="Inter, sans-serif" font-size="74" text-anchor="middle">' + emojiIcon + '</text>' +
+          '<text x="320" y="255" font-family="Inter, sans-serif" font-size="25" font-weight="800" fill="#ffffff" text-anchor="middle">' + title + '</text>' +
+          '<text x="320" y="288" font-family="Inter, sans-serif" font-size="15" font-weight="500" fill="rgba(255,255,255,0.88)" text-anchor="middle">' + subtitle + '</text>' +
+          '</svg>';
+        return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
+      }
+
+      var DEMO_SVG_MAP = {
+        'DEMO_KAOS': createSvgIllustrationDataUri('Kaos Seragam KDKMP', 'Katun Combed 24s Bordir Presisi', '#b91c1c', '#dc2626', '👕'),
+        'DEMO_BERAS': createSvgIllustrationDataUri('Beras Premium Sumberjo', 'Kemasan 5 Kg Pulen Wangi Alami', '#047857', '#10b981', '🌾'),
+        'DEMO_SEMBAKO': createSvgIllustrationDataUri('Paket Sembako Merah Putih', 'Beras, Minyak Goreng, Gula & Teh', '#b45309', '#f59e0b', '📦'),
+        'DEMO_PUPUK': createSvgIllustrationDataUri('Pupuk Organik Cair Tani Makmur', 'Nutrisi Hayati Padi & Hortikultura', '#15803d', '#22c55e', '🧪'),
+        'DEMO_MERCH': createSvgIllustrationDataUri('Merchandise Topi & Tumbler', 'Suvenir Resmi Anggota KDMP', '#1d4ed8', '#3b82f6', '🧢'),
+        'DEMO_MELON': createSvgIllustrationDataUri('Agrowisata Petik Melon', 'Greenhouse Hidroponik Desa Sumberjo', '#065f46', '#10b981', '🍈'),
+        'DEMO_KERIPIK': createSvgIllustrationDataUri('Keripik Singkong & Pisang', 'Olahan Renyah KWT Melati Sumberjo', '#9a3412', '#ea580c', '🍌'),
+        'DEMO_BATIK': createSvgIllustrationDataUri('Batik Tulis & Tenun Sumberjo', 'Kriya Khas Sanggar Sekar Sumberjo', '#6b21a8', '#9333ea', '🎨'),
+        'DEMO_MADU': createSvgIllustrationDataUri('Madu Murni Randu & Kaliandra', 'Budidaya Kelompok Lebah Lestari', '#92400e', '#d97706', '🍯'),
+        'DEMO_BANDENG': createSvgIllustrationDataUri('Bandeng Cabut Duri & Otak-Otak', 'Oleh-Oleh Khas Berkah Bahari', '#0f766e', '#14b8a6', '🐟'),
+        'DEMO_TOKOH': createSvgIllustrationDataUri('Sambutan Pengurus & Kepala Desa', 'Koperasi Desa Merah Putih (KDMP) Sumberjo', '#991b1b', '#047857', '🤝')
+      };
+
+      /* ------------------------------------------------------------------------
+         2. KONFIGURASI DEPLOYMENT GITHUB / VERCEL & STATE APLIKASI (5 SHEETS)
+         ------------------------------------------------------------------------
+         CARA DEPLOY KE GITHUB & VERCEL:
+         1. Deploy `Code.gs` di Google Apps Script sebagai Web App (Execute as: Me, Access: Anyone).
+         2. Salin URL Web App (`https://script.google.com/macros/s/.../exec`) ke `DEFAULT_GAS_WEB_APP_URL`
+            di bawah ini (atau atur langsung dari Tab 5 di Dashboard Admin).
+         ------------------------------------------------------------------------ */
+      var DEFAULT_GAS_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxDB8wGntY0sxepIKdKiNNBjR7qiNhxNeYRSPRko2vJoqkx8_z0Dko-Ade-e1m9ioHlzA/exec'; // <-- Tempel URL /exec Google Apps Script Anda di sini untuk produksi Vercel
+
+      var STORAGE_KEYS = {
+        THEME: 'kdmp_sumberjo_theme_v1',
+        SESSION: 'kdmp_sumberjo_admin_token_v1',
+        MOCK_DB: 'kdmp_sumberjo_mock_db_v1',
+        GAS_API_URL: 'kdmp_sumberjo_gas_api_url_v1'
+      };
+
+      var appState = {
+        isGasEnvironment: (typeof window.google !== 'undefined' && window.google && window.google.script && window.google.script.run),
+        gasApiUrl: DEFAULT_GAS_WEB_APP_URL,
+        sessionToken: '',
+        isAdminLoggedIn: false,
+        activeAdminTab: 'settings',
+        pendingProdukBase64: '',
+        pendingUmkmBase64: '',
+        pendingSambutanBase64: '',
+        pendingLogoBase64: '',
+        secretLogoTapCount: 0,
+        secretLogoTimer: null,
+        data: {
+          settings: {
+            Nama_Web: 'KDMP Desa Sumberjo',
+            Subjudul_Web: 'Koperasi Desa Merah Putih & Sentra Ekonomi Warga Sumberjo',
+            Judul_Sambutan: 'Sinergi Ekonomi Kerakyatan & Etalase Digital Desa Sumberjo',
+            Sambutan_Utama: 'Selamat datang di Portal Digital Koperasi Desa Merah Putih (KDMP) Desa Sumberjo. Melalui sinergi ekonomi kerakyatan, kami menghadirkan produk unggulan koperasi, layanan kemitraan agribisnis, serta etalase produk UMKM dan potensi terbaik warga Desa Sumberjo dalam satu layanan terpadu yang transparan dan mudah diakses.',
+            Tokoh_Sambutan: 'Ketua Pengurus KDMP & Kepala Desa Sumberjo',
+            Jabatan_Sambutan: 'Pemerintah Desa & Pengurus Koperasi Desa Merah Putih Sumberjo',
+            ID_Foto_Sambutan: 'DEMO_TOKOH',
+            Foto_Sambutan_Url: 'DEMO_TOKOH',
+            ID_Logo_Web: '',
+            Logo_Web_Url: '',
+            Pesan_Footer: '© 2026 Koperasi Desa Merah Putih (KDMP) Desa Sumberjo, Kec. Lamongan, Kab. Lamongan. Membangun Desa Mandiri & Sejahtera.',
+            Nomor_WA_Default: '6281234567890'
+          },
+          links: [
+            { id: 'LNK-001', title: 'Portal Berita Desa Sumberjo', url: 'https://lamongankab.go.id', icon: 'newspaper', status: 'Aktif' },
+            { id: 'LNK-002', title: 'Pendaftaran Mitra UMKM KDMP', url: 'https://forms.gle/kdkmpSumberjoMitra', icon: 'store', status: 'Aktif' },
+            { id: 'LNK-003', title: 'Instagram Resmi KDMP Sumberjo', url: 'https://instagram.com/kdmpsumberjo', icon: 'instagram', status: 'Aktif' },
+            { id: 'LNK-004', title: 'Layanan Simpan Pinjam & PPOB', url: 'https://wa.me/6281234567890?text=Halo%20Admin%20KDMP%2C%20saya%20ingin%20informasi%20layanan%20Koperasi', icon: 'wallet', status: 'Aktif' },
+            { id: 'LNK-005', title: 'YouTube Profil Desa Sumberjo', url: 'https://youtube.com', icon: 'video', status: 'Aktif' },
+            { id: 'LNK-006', title: 'Laporan RAT Koperasi Tahunan', url: 'https://drive.google.com', icon: 'file-text', status: 'Draft' }
+          ],
+          produk: [
+            { id: 'PRD-001', nama: 'Kaos Seragam KDKMP Sumberjo Exclusive', harga: 85000, deskripsi: 'Kaos polo katun combed 24s bordir presisi logo Koperasi Desa Merah Putih Sumberjo. Nyaman dipakai kegiatan lapangan maupun rapat anggota.', idFotoDrive: 'DEMO_KAOS', fotoUrl: 'DEMO_KAOS', noWa: '6281234567890', status: 'Aktif' },
+            { id: 'PRD-002', nama: 'Beras Premium Sumberjo Pulen Wangi (5 Kg)', harga: 72500, deskripsi: 'Beras pilihan hasil panen petani anggota KDMP Desa Sumberjo. Diproses tanpa pemutih, bersih, pulen, dan dikemas higienis.', idFotoDrive: 'DEMO_BERAS', fotoUrl: 'DEMO_BERAS', noWa: '6281234567890', status: 'Aktif' },
+            { id: 'PRD-003', nama: 'Paket Sembako Hemat Merah Putih', harga: 125000, deskripsi: 'Paket sembako koperasi berisi Beras 5 Kg, Minyak Goreng 1 Liter, Gula Pasir 1 Kg, dan Teh Celup untuk kebutuhan rumah tangga warga.', idFotoDrive: 'DEMO_SEMBAKO', fotoUrl: 'DEMO_SEMBAKO', noWa: '6281234567890', status: 'Aktif' },
+            { id: 'PRD-004', nama: 'Pupuk Organik Cair & Hayati Tani Makmur (1L)', harga: 45000, deskripsi: 'Formula nutrisi organik produksi unit agribisnis KDMP Sumberjo untuk meningkatkan hasil panen padi, jagung, dan hortikultura.', idFotoDrive: 'DEMO_PUPUK', fotoUrl: 'DEMO_PUPUK', noWa: '6281234567890', status: 'Aktif' },
+            { id: 'PRD-005', nama: 'Merchandise Topi & Tumbler KDMP Sumberjo', harga: 65000, deskripsi: 'Paket suvenir resmi anggota Koperasi Desa Merah Putih Sumberjo berbahan stainless tahan panas dan topi bordir.', idFotoDrive: 'DEMO_MERCH', fotoUrl: 'DEMO_MERCH', noWa: '6281234567890', status: 'Aktif' }
+          ],
+          umkm: [
+            { id: 'UMK-001', nama: 'Agrowisata Petik Melon Hidroponik', pengelola: 'POKDARWIS & BUMDes Sumberjo', deskripsi: 'Wisata edukasi greenhouse melon golden premium manis renyah. Pengunjung dapat memetik langsung buah melon segar dari kebun.', idFotoDrive: 'DEMO_MELON', fotoUrl: 'DEMO_MELON', noWa: '6281330112233', status: 'Aktif' },
+            { id: 'UMK-002', nama: 'Keripik Singkong & Pisang Renyah Ibu Kartini', pengelola: 'KWT Melati Dusun Sumberjo', deskripsi: 'Camilan tradisional olahan hasil kebun warga tanpa bahan pengawet dengan varian rasa balado daun jeruk, bawang gurih, dan cokelat.', idFotoDrive: 'DEMO_KERIPIK', fotoUrl: 'DEMO_KERIPIK', noWa: '6281330445566', status: 'Aktif' },
+            { id: 'UMK-003', nama: 'Batik Tulis & Tenun Motif Lokal Sumberjo', pengelola: 'Sanggar Kreatif Sekar Sumberjo', deskripsi: 'Kerajinan kain batik tulis dan selendang motif khas pesisir dan agraris Lamongan hasil karya perajin muda Desa Sumberjo.', idFotoDrive: 'DEMO_BATIK', fotoUrl: 'DEMO_BATIK', noWa: '6281330778899', status: 'Aktif' },
+            { id: 'UMK-004', nama: 'Madu Murni Randu & Kaliandra Hutan Desa', pengelola: 'Kelompok Ternak Lebah Lestari', deskripsi: 'Madu asli 100% murni hasil budidaya lebah warga Sumberjo, kaya enzim alami untuk menjaga daya tahan tubuh keluarga.', idFotoDrive: 'DEMO_MADU', fotoUrl: 'DEMO_MADU', noWa: '6281330990011', status: 'Aktif' },
+            { id: 'UMK-005', nama: 'Olahan Bandeng Cabut Duri & Otak-Otak', pengelola: 'UMKM Berkah Bahari Sumberjo', deskripsi: 'Produk olahan ikan bandeng segar tanpa duri siap goreng dan kukus, dikemas vakum tahan lama untuk oleh-oleh khas.', idFotoDrive: 'DEMO_BANDENG', fotoUrl: 'DEMO_BANDENG', noWa: '6281330223344', status: 'Aktif' }
+          ],
+          adminCreds: {
+            username: 'admin',
+            passwordPlain: 'sumberjo2026'
+          }
+        }
+      };
+
+      /* ------------------------------------------------------------------------
+         3. SAFE LOCALSTORAGE HELPER (UNTUK PREFERENSI TEMA & MOCK STATE)
+         ------------------------------------------------------------------------ */
+      function safeGetStorage(key) {
+        try {
+          return window.localStorage.getItem(key);
+        } catch (e) {
+          return null;
+        }
+      }
+
+      function safeSetStorage(key, val) {
+        try {
+          window.localStorage.setItem(key, val);
+        } catch (e) {
+          // Abaikan jika iframe memblokir storage
+        }
+      }
+
+      /* ------------------------------------------------------------------------
+         4. SISTEM TEMA (LIGHT / DARK MODE PERSISTEN DI LOCALSTORAGE)
+         ------------------------------------------------------------------------ */
+      function initThemeSystem() {
+        var savedTheme = safeGetStorage(STORAGE_KEYS.THEME) || 'light';
+        applyTheme(savedTheme);
+
+        var toggleBtn = document.getElementById('themeToggleBtn');
+        if (toggleBtn) {
+          toggleBtn.addEventListener('click', function() {
+            var current = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+            var next = current === 'dark' ? 'light' : 'dark';
+            applyTheme(next);
+            safeSetStorage(STORAGE_KEYS.THEME, next);
+            showToast(next === 'dark' ? '🌙 Mode Gelap (Dark Glass) diaktifkan' : '☀️ Mode Terang (Light Glass) diaktifkan');
+          });
+        }
+      }
+
+      function applyTheme(themeName) {
+        var iconEl = document.getElementById('themeIconDisplay');
+        if (themeName === 'dark') {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          if (iconEl) iconEl.textContent = '☀️';
+        } else {
+          document.documentElement.removeAttribute('data-theme');
+          if (iconEl) iconEl.textContent = '🌙';
+        }
+      }
+
+      /* ------------------------------------------------------------------------
+         5. UTILITAS FORMAT RUPIAH, WHATSAPP URL DINAMIS & GAMBAR DRIVE
+         ------------------------------------------------------------------------ */
+      function formatRupiah(angka) {
+        var num = Number(angka) || 0;
+        return 'Rp ' + num.toLocaleString('id-ID');
+      }
+
+      function resolveImageSrc(fotoUrlOrId, fallbackTitle) {
+        var raw = String(fotoUrlOrId || '').trim();
+        if (DEMO_SVG_MAP[raw]) {
+          return DEMO_SVG_MAP[raw];
+        }
+        if (raw.indexOf('data:image/') === 0 || raw.indexOf('http://') === 0 || raw.indexOf('https://') === 0) {
+          return raw;
+        }
+        if (raw.length > 10) {
+          return 'https://lh3.googleusercontent.com/d/' + raw;
+        }
+        return createSvgIllustrationDataUri(fallbackTitle || 'KDMP Sumberjo', 'Foto Produk / UMKM Desa Sumberjo', '#0f766e', '#10b981', '📷');
+      }
+
+      function buildProductWhatsAppUrl(product) {
+        var phone = String(product.noWa || appState.data.settings.Nomor_WA_Default || '6281234567890').replace(/[^0-9]/g, '');
+        var hargaFormatted = formatRupiah(product.harga);
+        var text = 'Halo, saya tertarik memesan ' + product.nama + ' seharga ' + hargaFormatted + ' dari Portal KDMP Desa Sumberjo. Apakah stoknya tersedia?';
+        return 'https://wa.me/' + phone + '?text=' + encodeURIComponent(text);
+      }
+
+      function buildUmkmWhatsAppUrl(umkm) {
+        var phone = String(umkm.noWa || appState.data.settings.Nomor_WA_Default || '6281234567890').replace(/[^0-9]/g, '');
+        var text = 'Halo Pengelola ' + umkm.nama + ' (' + umkm.pengelola + '), saya melihat informasi UMKM Anda di Portal KDMP Desa Sumberjo dan ingin bertanya lebih lanjut.';
+        return 'https://wa.me/' + phone + '?text=' + encodeURIComponent(text);
+      }
+
+      function getIconEmoji(iconName) {
+        var map = {
+          'newspaper': '📰',
+          'store': '🏪',
+          'instagram': '📸',
+          'wallet': '💳',
+          'video': '🎬',
+          'file-text': '📄',
+          'link': '🔗'
+        };
+        return map[iconName] || '🔗';
+      }
+
+      function escapeHtml(str) {
+        return String(str || '')
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#039;');
+      }
+
+      /* ------------------------------------------------------------------------
+         6. TOAST NOTIFICATION & LOADING SPINNER
+         ------------------------------------------------------------------------ */
+      function showToast(message, isError) {
+        var container = document.getElementById('toastContainer');
+        if (!container) return;
+        var toast = document.createElement('div');
+        toast.className = 'toast-msg' + (isError ? ' error' : '');
+        toast.textContent = message;
+        container.appendChild(toast);
+        setTimeout(function() {
+          if (toast.parentNode) toast.parentNode.removeChild(toast);
+        }, 3400);
+      }
+
+      function setLoading(isLoading, subtext) {
+        var overlay = document.getElementById('loadingOverlay');
+        var subEl = document.getElementById('loadingSubtext');
+        if (subEl && subtext) subEl.textContent = subtext;
+        if (!overlay) return;
+        if (isLoading) {
+          overlay.classList.remove('hidden');
+        } else {
+          overlay.classList.add('hidden');
+        }
+      }
+
+      /* ------------------------------------------------------------------------
+         7. RENDERER HALAMAN PUBLIK & DASHBOARD ADMIN
+         ------------------------------------------------------------------------ */
+      function renderAllViews() {
+        renderPublicSettingsAndStats();
+        renderPublicLinks();
+        renderPublicProduk();
+        renderPublicUmkm();
+        renderAdminListsAndSettings();
+      }
+
+      function renderPublicSettingsAndStats() {
+        var s = appState.data.settings || {};
+        document.getElementById('navBrandTitle').textContent = s.Nama_Web || 'KDMP Desa Sumberjo';
+        document.getElementById('navBrandSubtitle').textContent = s.Subjudul_Web || 'Koperasi Desa Merah Putih';
+        document.getElementById('heroWelcomeTitle').textContent = s.Judul_Sambutan || (s.Nama_Web + ' — Sentra Ekonomi & UMKM Warga');
+        document.getElementById('heroWelcomeBody').textContent = s.Sambutan_Utama || '';
+        var tokohName = s.Tokoh_Sambutan || 'Pengurus KDMP Sumberjo';
+        document.getElementById('heroSpeakerName').textContent = tokohName;
+        document.getElementById('heroSpeakerRole').textContent = s.Jabatan_Sambutan || 'Desa Sumberjo';
+        document.getElementById('heroPhotoCaptionText').textContent = tokohName;
+        document.getElementById('footerTextDisplay').textContent = s.Pesan_Footer || '';
+
+        // Render Foto Sambutan Utama & Avatar Kecil
+        var rawSambutanFoto = s.Foto_Sambutan_Url || s.ID_Foto_Sambutan || 'DEMO_TOKOH';
+        var resolvedSambutanSrc = resolveImageSrc(rawSambutanFoto, tokohName);
+        var heroPhotoEl = document.getElementById('heroWelcomePhotoImg');
+        if (heroPhotoEl) heroPhotoEl.src = resolvedSambutanSrc;
+
+        var thumbImgEl = document.getElementById('heroSpeakerThumbImg');
+        var initialsEl = document.getElementById('heroSpeakerInitials');
+        if (thumbImgEl && initialsEl) {
+          thumbImgEl.src = resolvedSambutanSrc;
+          thumbImgEl.style.display = 'block';
+          initialsEl.style.display = 'none';
+        }
+
+        // Render Logo Koperasi di Header jika ada
+        var rawLogo = s.Logo_Web_Url || s.ID_Logo_Web || '';
+        var logoImgEl = document.getElementById('brandLogoImg');
+        var logoTextEl = document.getElementById('brandLogoText');
+        if (rawLogo && String(rawLogo).trim() !== '') {
+          logoImgEl.src = resolveImageSrc(rawLogo, s.Nama_Web);
+          logoImgEl.style.display = 'block';
+          logoTextEl.style.display = 'none';
+        } else {
+          logoImgEl.style.display = 'none';
+          logoTextEl.style.display = 'inline';
+        }
+
+        var activeProduk = (appState.data.produk || []).filter(function(x) { return String(x.status).toLowerCase() === 'aktif'; });
+        var activeUmkm = (appState.data.umkm || []).filter(function(x) { return String(x.status).toLowerCase() === 'aktif'; });
+        var activeLinks = (appState.data.links || []).filter(function(x) { return String(x.status).toLowerCase() === 'aktif'; });
+
+        document.getElementById('statCountProduk').textContent = String(activeProduk.length);
+        document.getElementById('statCountUmkm').textContent = String(activeUmkm.length);
+        document.getElementById('statCountLinks').textContent = String(activeLinks.length);
+      }
+
+      function renderPublicLinks() {
+        var container = document.getElementById('publicLinksGrid');
+        if (!container) return;
+        var activeLinks = (appState.data.links || []).filter(function(item) {
+          return String(item.status || 'Aktif').toLowerCase() === 'aktif';
+        });
+
+        if (activeLinks.length === 0) {
+          container.innerHTML = '<div class="glass-card" style="padding:18px; color:var(--text-muted);">Belum ada tautan aktif.</div>';
+          return;
+        }
+
+        container.innerHTML = activeLinks.map(function(item) {
+          return '<a class="glass-card quick-link-btn" href="' + escapeHtml(item.url) + '" target="_blank" rel="noopener noreferrer">' +
+            '<div class="quick-link-left">' +
+              '<div class="quick-link-icon">' + getIconEmoji(item.icon) + '</div>' +
+              '<span class="quick-link-title">' + escapeHtml(item.title) + '</span>' +
+            '</div>' +
+            '<span style="font-size:0.85rem; color:var(--text-subtle);">↗</span>' +
+          '</a>';
+        }).join('');
+      }
+
+      function renderPublicProduk() {
+        var container = document.getElementById('publicProdukGrid');
+        if (!container) return;
+        var query = (document.getElementById('searchProdukInput').value || '').trim().toLowerCase();
+
+        var filtered = (appState.data.produk || []).filter(function(item) {
+          var isAktif = String(item.status || 'Aktif').toLowerCase() === 'aktif';
+          if (!isAktif) return false;
+          if (!query) return true;
+          return String(item.nama).toLowerCase().indexOf(query) !== -1 ||
+                 String(item.deskripsi).toLowerCase().indexOf(query) !== -1;
+        });
+
+        if (filtered.length === 0) {
+          container.innerHTML = '<div class="glass-card" style="padding:24px; grid-column:1/-1; text-align:center; color:var(--text-muted);">Produk yang dicari tidak ditemukan.</div>';
+          return;
+        }
+
+        container.innerHTML = filtered.map(function(item) {
+          var imgSrc = resolveImageSrc(item.fotoUrl || item.idFotoDrive, item.nama);
+          var waUrl = buildProductWhatsAppUrl(item);
+          return '<article class="glass-card catalog-card">' +
+            '<div class="card-media-wrap">' +
+              '<img src="' + imgSrc + '" alt="' + escapeHtml(item.nama) + '" loading="lazy">' +
+              '<span class="card-badge-top">Produk Resmi KDMP</span>' +
+              '<span class="card-price-tag">' + formatRupiah(item.harga) + '</span>' +
+            '</div>' +
+            '<div class="card-body">' +
+              '<h3 class="card-title">' + escapeHtml(item.nama) + '</h3>' +
+              '<p class="card-desc">' + escapeHtml(item.deskripsi) + '</p>' +
+              '<a href="' + waUrl + '" target="_blank" rel="noopener noreferrer" class="btn-wa-action kdmp-order">' +
+                '<span>💬 Pesan via WhatsApp</span>' +
+              '</a>' +
+            '</div>' +
+          '</article>';
+        }).join('');
+      }
+
+      function renderPublicUmkm() {
+        var container = document.getElementById('publicUmkmGrid');
+        if (!container) return;
+        var query = (document.getElementById('searchUmkmInput').value || '').trim().toLowerCase();
+
+        var filtered = (appState.data.umkm || []).filter(function(item) {
+          var isAktif = String(item.status || 'Aktif').toLowerCase() === 'aktif';
+          if (!isAktif) return false;
+          if (!query) return true;
+          return String(item.nama).toLowerCase().indexOf(query) !== -1 ||
+                 String(item.pengelola).toLowerCase().indexOf(query) !== -1 ||
+                 String(item.deskripsi).toLowerCase().indexOf(query) !== -1;
+        });
+
+        if (filtered.length === 0) {
+          container.innerHTML = '<div class="glass-card" style="padding:24px; grid-column:1/-1; text-align:center; color:var(--text-muted);">Data UMKM atau potensi desa tidak ditemukan.</div>';
+          return;
+        }
+
+        container.innerHTML = filtered.map(function(item) {
+          var imgSrc = resolveImageSrc(item.fotoUrl || item.idFotoDrive, item.nama);
+          var waUrl = buildUmkmWhatsAppUrl(item);
+          return '<article class="glass-card catalog-card">' +
+            '<div class="card-media-wrap">' +
+              '<img src="' + imgSrc + '" alt="' + escapeHtml(item.nama) + '" loading="lazy">' +
+              '<span class="card-badge-top">UMKM & Potensi Sumberjo</span>' +
+            '</div>' +
+            '<div class="card-body">' +
+              '<h3 class="card-title">' + escapeHtml(item.nama) + '</h3>' +
+              '<div class="card-subtitle">📍 ' + escapeHtml(item.pengelola) + '</div>' +
+              '<p class="card-desc">' + escapeHtml(item.deskripsi) + '</p>' +
+              '<a href="' + waUrl + '" target="_blank" rel="noopener noreferrer" class="btn-wa-action">' +
+                '<span>📲 Hubungi Penjual</span>' +
+              '</a>' +
+            '</div>' +
+          '</article>';
+        }).join('');
+      }
+
+      /* ------------------------------------------------------------------------
+         8. RENDERER LIST CRUD DI PORTAL ADMIN
+         ------------------------------------------------------------------------ */
+      function renderAdminListsAndSettings() {
+        // Isi form Settings & Sambutan
+        var s = appState.data.settings || {};
+        document.getElementById('setNamaWeb').value = s.Nama_Web || '';
+        document.getElementById('setSubjudulWeb').value = s.Subjudul_Web || '';
+        document.getElementById('setJudulSambutan').value = s.Judul_Sambutan || (s.Nama_Web + ' — Sentra Ekonomi & UMKM Warga');
+        document.getElementById('setSambutanUtama').value = s.Sambutan_Utama || '';
+        document.getElementById('setTokohSambutan').value = s.Tokoh_Sambutan || '';
+        document.getElementById('setJabatanSambutan').value = s.Jabatan_Sambutan || '';
+        document.getElementById('setIdFotoSambutan').value = s.ID_Foto_Sambutan || 'DEMO_TOKOH';
+        document.getElementById('setIdLogoWeb').value = s.ID_Logo_Web || '';
+        document.getElementById('setWaDefault').value = s.Nomor_WA_Default || '';
+        document.getElementById('setPesanFooter').value = s.Pesan_Footer || '';
+
+        var sambutanPrevImg = document.getElementById('sambutanPhotoPreviewImg');
+        if (sambutanPrevImg && !appState.pendingSambutanBase64) {
+          sambutanPrevImg.src = resolveImageSrc(s.Foto_Sambutan_Url || s.ID_Foto_Sambutan || 'DEMO_TOKOH', s.Tokoh_Sambutan);
+        }
+
+        var logoPrevWrap = document.getElementById('logoPhotoPreviewWrap');
+        var logoPrevImg = document.getElementById('logoPhotoPreviewImg');
+        var rawLogo = s.Logo_Web_Url || s.ID_Logo_Web || '';
+        if (logoPrevImg && !appState.pendingLogoBase64) {
+          if (rawLogo && String(rawLogo).trim() !== '') {
+            logoPrevImg.src = resolveImageSrc(rawLogo, s.Nama_Web);
+            logoPrevWrap.classList.add('active');
+          } else {
+            logoPrevWrap.classList.remove('active');
+          }
+        }
+
+        // Render Daftar Produk KDMP
+        var produkList = appState.data.produk || [];
+        document.getElementById('adminProdukCountLabel').textContent = produkList.length + ' Baris';
+        var produkContainer = document.getElementById('adminProdukListContainer');
+        produkContainer.innerHTML = produkList.map(function(item) {
+          var statusClass = String(item.status || 'Aktif').toLowerCase() === 'aktif' ? 'aktif' : 'draft';
+          var imgSrc = resolveImageSrc(item.fotoUrl || item.idFotoDrive, item.nama);
+          return '<div class="admin-list-item">' +
+            '<div class="admin-item-info">' +
+              '<img class="admin-item-thumb" src="' + imgSrc + '" alt="Thumb">' +
+              '<div class="admin-item-text">' +
+                '<h4>' + escapeHtml(item.nama) + ' <span class="status-chip ' + statusClass + '">' + escapeHtml(item.status || 'Aktif') + '</span></h4>' +
+                '<p>' + formatRupiah(item.harga) + ' • WA: ' + escapeHtml(item.noWa || 'Default') + ' • ID: ' + escapeHtml(item.id) + '</p>' +
+              '</div>' +
+            '</div>' +
+            '<div class="admin-item-actions">' +
+              '<button type="button" class="btn-secondary" data-action="edit-produk" data-id="' + escapeHtml(item.id) + '">✏️ Edit</button>' +
+              '<button type="button" class="btn-secondary" data-action="toggle-produk" data-id="' + escapeHtml(item.id) + '">' + (statusClass === 'aktif' ? '🙈 Sembunyikan' : '👁️ Tampilkan') + '</button>' +
+              '<button type="button" class="btn-danger" data-action="delete-produk" data-id="' + escapeHtml(item.id) + '">🗑️ Hapus</button>' +
+            '</div>' +
+          '</div>';
+        }).join('');
+
+        // Render Daftar Potensi UMKM
+        var umkmList = appState.data.umkm || [];
+        document.getElementById('adminUmkmCountLabel').textContent = umkmList.length + ' Baris';
+        var umkmContainer = document.getElementById('adminUmkmListContainer');
+        umkmContainer.innerHTML = umkmList.map(function(item) {
+          var statusClass = String(item.status || 'Aktif').toLowerCase() === 'aktif' ? 'aktif' : 'draft';
+          var imgSrc = resolveImageSrc(item.fotoUrl || item.idFotoDrive, item.nama);
+          return '<div class="admin-list-item">' +
+            '<div class="admin-item-info">' +
+              '<img class="admin-item-thumb" src="' + imgSrc + '" alt="Thumb">' +
+              '<div class="admin-item-text">' +
+                '<h4>' + escapeHtml(item.nama) + ' <span class="status-chip ' + statusClass + '">' + escapeHtml(item.status || 'Aktif') + '</span></h4>' +
+                '<p>' + escapeHtml(item.pengelola) + ' • WA: ' + escapeHtml(item.noWa) + '</p>' +
+              '</div>' +
+            '</div>' +
+            '<div class="admin-item-actions">' +
+              '<button type="button" class="btn-secondary" data-action="edit-umkm" data-id="' + escapeHtml(item.id) + '">✏️ Edit</button>' +
+              '<button type="button" class="btn-secondary" data-action="toggle-umkm" data-id="' + escapeHtml(item.id) + '">' + (statusClass === 'aktif' ? '🙈 Sembunyikan' : '👁️ Tampilkan') + '</button>' +
+              '<button type="button" class="btn-danger" data-action="delete-umkm" data-id="' + escapeHtml(item.id) + '">🗑️ Hapus</button>' +
+            '</div>' +
+          '</div>';
+        }).join('');
+
+        // Render Daftar Links
+        var linksList = appState.data.links || [];
+        document.getElementById('adminLinksCountLabel').textContent = linksList.length + ' Baris';
+        var linksContainer = document.getElementById('adminLinksListContainer');
+        linksContainer.innerHTML = linksList.map(function(item) {
+          var statusClass = String(item.status || 'Aktif').toLowerCase() === 'aktif' ? 'aktif' : 'draft';
+          return '<div class="admin-list-item">' +
+            '<div class="admin-item-info">' +
+              '<div class="quick-link-icon">' + getIconEmoji(item.icon) + '</div>' +
+              '<div class="admin-item-text">' +
+                '<h4>' + escapeHtml(item.title) + ' <span class="status-chip ' + statusClass + '">' + escapeHtml(item.status || 'Aktif') + '</span></h4>' +
+                '<p>' + escapeHtml(item.url) + '</p>' +
+              '</div>' +
+            '</div>' +
+            '<div class="admin-item-actions">' +
+              '<button type="button" class="btn-secondary" data-action="edit-links" data-id="' + escapeHtml(item.id) + '">✏️ Edit</button>' +
+              '<button type="button" class="btn-secondary" data-action="toggle-links" data-id="' + escapeHtml(item.id) + '">' + (statusClass === 'aktif' ? '🙈 Sembunyikan' : '👁️ Tampilkan') + '</button>' +
+              '<button type="button" class="btn-danger" data-action="delete-links" data-id="' + escapeHtml(item.id) + '">🗑️ Hapus</button>' +
+            '</div>' +
+          '</div>';
+        }).join('');
+      }
+
+      /* ------------------------------------------------------------------------
+         9. KOMPRESI & KONVERSI FOTO KE BASE64 DI BROWSER (CLIENT-SIDE)
+         ------------------------------------------------------------------------ */
+      function convertFileToBase64(file, callback) {
+        if (!file) return;
+        var reader = new FileReader();
+        reader.onload = function(evt) {
+          var img = new Image();
+          img.onload = function() {
+            var canvas = document.createElement('canvas');
+            var maxDim = 900;
+            var w = img.width;
+            var h = img.height;
+            if (w > h && w > maxDim) {
+              h = Math.round(h * (maxDim / w));
+              w = maxDim;
+            } else if (h > maxDim) {
+              w = Math.round(w * (maxDim / h));
+              h = maxDim;
+            }
+            canvas.width = w;
+            canvas.height = h;
+            var ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, w, h);
+            var compressedDataUrl = canvas.toDataURL('image/jpeg', 0.82);
+            callback(compressedDataUrl);
+          };
+          img.src = evt.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+
+      /* ------------------------------------------------------------------------
+         10. JEMBATAN KOMUNIKASI BACKEND HIBRIDA (VERCEL FETCH API + NATIVE GAS + FALLBACK)
+         ------------------------------------------------------------------------ */
+      function getActiveGasApiUrl() {
+        var savedUrl = safeGetStorage(STORAGE_KEYS.GAS_API_URL);
+        var candidate = (savedUrl !== null && savedUrl !== undefined && String(savedUrl).trim() !== '')
+          ? String(savedUrl).trim()
+          : String(DEFAULT_GAS_WEB_APP_URL || '').trim();
+        appState.gasApiUrl = candidate;
+        return candidate;
+      }
+
+      function updateApiStatusBadge() {
+        var badgeEl = document.getElementById('apiConnectionBadge');
+        var inputEl = document.getElementById('gasApiUrlInput');
+        var activeUrl = getActiveGasApiUrl();
+        if (inputEl && document.activeElement !== inputEl) {
+          inputEl.value = activeUrl;
+        }
+        if (!badgeEl) return;
+        if (appState.isGasEnvironment) {
+          badgeEl.className = 'status-chip aktif';
+          badgeEl.textContent = 'Native GAS Terhubung';
+        } else if (activeUrl && activeUrl.indexOf('https://script.google.com/') === 0) {
+          badgeEl.className = 'status-chip aktif';
+          badgeEl.textContent = 'Vercel REST API Aktif';
+        } else {
+          badgeEl.className = 'status-chip draft';
+          badgeEl.textContent = 'Mode Lokal / Preview';
+        }
+      }
+
+      /**
+       * Fungsi universal pemanggil Backend:
+       * 1. Jika di dalam iframe Google Apps Script -> memakai `google.script.run`
+       * 2. Jika di Vercel / GitHub Pages / Netlify dan `gasApiUrl` terisi -> memakai `fetch()` POST JSON (`text/plain;charset=utf-8` bebas CORS preflight)
+       * 3. Jika belum dihubungkan ke URL GAS -> memakai database lokal `localStorage` agar tetap interaktif 100%
+       */
+      function callBackendApi(actionName, requestData, onSuccess, onError, localFallbackFn) {
+        var apiUrl = getActiveGasApiUrl();
+
+        // JALUR 1: Native Google Apps Script Environment
+        if (appState.isGasEnvironment) {
+          var runner = window.google.script.run
+            .withSuccessHandler(function(res) {
+              if (onSuccess) onSuccess(res);
+            })
+            .withFailureHandler(function(err) {
+              if (onError) onError(err);
+            });
+
+          if (actionName === 'getInitialAppData') {
+            runner.getInitialAppData(requestData.token || '');
+          } else if (actionName === 'adminLogin') {
+            runner.adminLogin(requestData.username, requestData.password);
+          } else if (actionName === 'adminLogout') {
+            runner.adminLogout(requestData.token || '');
+          } else if (actionName === 'saveGlobalSettings') {
+            runner.saveGlobalSettings(requestData.token, requestData.settings);
+          } else if (actionName === 'updateAdminAccount') {
+            runner.updateAdminAccount(requestData.token, requestData.newUsername, requestData.newPassword);
+          } else if (actionName === 'saveEntityRecord') {
+            runner.saveEntityRecord(requestData.token, requestData.entityType, requestData.payload);
+          } else if (actionName === 'toggleEntityStatus') {
+            runner.toggleEntityStatus(requestData.token, requestData.entityType, requestData.recordId);
+          } else if (actionName === 'deleteEntityRecord') {
+            runner.deleteEntityRecord(requestData.token, requestData.entityType, requestData.recordId);
+          }
+          return;
+        }
+
+        // JALUR 2: Headless REST API via Fetch (Untuk Deployment GitHub Pages / Vercel / Netlify)
+        if (apiUrl && apiUrl.indexOf('http') === 0) {
+          var payloadObj = Object.assign({ action: actionName }, requestData || {});
+          window.fetch(apiUrl, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'text/plain;charset=utf-8'
+            },
+            body: JSON.stringify(payloadObj),
+            redirect: 'follow'
+          })
+          .then(function(response) {
+            return response.json();
+          })
+          .then(function(data) {
+            if (onSuccess) onSuccess(data);
+          })
+          .catch(function(err) {
+            if (onError) onError(err);
+          });
+          return;
+        }
+
+        // JALUR 3: Mode Preview / Lokal (Canvas atau sebelum URL GAS diisi)
+        if (localFallbackFn) {
+          setTimeout(function() {
+            localFallbackFn();
+          }, 180);
+        }
+      }
+
+      function loadInitialDataFromServer() {
+        setLoading(true, 'Menyinkronkan 5 Sheet Database KDMP Sumberjo...');
+        var savedToken = safeGetStorage(STORAGE_KEYS.SESSION) || '';
+        appState.sessionToken = savedToken;
+        updateApiStatusBadge();
+
+        callBackendApi(
+          'getInitialAppData',
+          { token: savedToken },
+          function(res) {
+            setLoading(false);
+            if (res && res.success) {
+              appState.data.settings = res.settings || appState.data.settings;
+              appState.data.links = res.links || [];
+              appState.data.produk = res.produk || [];
+              appState.data.umkm = res.umkm || [];
+              appState.isAdminLoggedIn = Boolean(res.isAdmin);
+              updateAdminModeButton();
+              updateApiStatusBadge();
+              renderAllViews();
+              checkUrlForAdminRoute();
+            } else {
+              showToast((res && res.message) || 'Gagal memuat data dari server.', true);
+              renderAllViews();
+            }
+          },
+          function(err) {
+            setLoading(false);
+            showToast('Gagal terhubung ke API GAS: ' + (err && err.message ? err.message : 'Periksa URL /exec Anda'), true);
+            renderAllViews();
+          },
+          function() {
+            var cachedDb = safeGetStorage(STORAGE_KEYS.MOCK_DB);
+            if (cachedDb) {
+              try {
+                var parsed = JSON.parse(cachedDb);
+                if (parsed && parsed.settings) appState.data = parsed;
+              } catch (e) {}
+            }
+            setLoading(false);
+            updateApiStatusBadge();
+            renderAllViews();
+            checkUrlForAdminRoute();
+          }
+        );
+      }
+
+      function persistMockDb() {
+        if (!appState.isGasEnvironment && !getActiveGasApiUrl()) {
+          safeSetStorage(STORAGE_KEYS.MOCK_DB, JSON.stringify(appState.data));
+        }
+      }
+
+      /* ------------------------------------------------------------------------
+         11. SISTEM AKSES RAHASIA PORTAL ADMIN (3X KLIK LOGO ATAU URL #/admin)
+         ------------------------------------------------------------------------ */
+      function checkUrlForAdminRoute() {
+        var hash = window.location.hash || '';
+        var search = window.location.search || '';
+        var pathname = window.location.pathname || '';
+        if (
+          hash.toLowerCase().indexOf('admin') !== -1 ||
+          search.toLowerCase().indexOf('admin') !== -1 ||
+          pathname.toLowerCase() === '/admin'
+        ) {
+          triggerAdminAccess();
+        }
+      }
+
+      function triggerAdminAccess() {
+        if (appState.isAdminLoggedIn) {
+          switchSpaView('admin');
+        } else {
+          openLoginModal();
+        }
+      }
+
+      function switchSpaView(targetView) {
+        var publicView = document.getElementById('publicPortalView');
+        var adminView = document.getElementById('adminPortalView');
+        if (targetView === 'admin') {
+          publicView.classList.add('spa-view-hidden');
+          adminView.classList.remove('spa-view-hidden');
+          updateApiStatusBadge();
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else {
+          adminView.classList.add('spa-view-hidden');
+          publicView.classList.remove('spa-view-hidden');
+          if (window.location.hash.indexOf('admin') !== -1) {
+            history.replaceState(null, '', window.location.pathname);
+          }
+        }
+        updateAdminModeButton();
+      }
+
+      function updateAdminModeButton() {
+        var btnEl = document.getElementById('btnQuickAdminSwitch');
+        var labelEl = document.getElementById('modeIndicatorLabel');
+        var adminView = document.getElementById('adminPortalView');
+        var isShowingAdmin = !adminView.classList.contains('spa-view-hidden');
+        if (!btnEl || !labelEl) return;
+
+        // Sembunyikan tombol sepenuhnya dari masyarakat umum jika admin belum login
+        if (!appState.isAdminLoggedIn && !isShowingAdmin) {
+          btnEl.classList.add('spa-view-hidden');
+          return;
+        }
+
+        btnEl.classList.remove('spa-view-hidden');
+        if (isShowingAdmin) {
+          labelEl.textContent = '🌐 Ke Halaman Publik';
+        } else {
+          labelEl.textContent = '⚡ Dashboard Admin';
+        }
+      }
+
+      function openLoginModal() {
+        document.getElementById('adminLoginModal').classList.remove('spa-view-hidden');
+        document.getElementById('loginUsernameInput').focus();
+      }
+
+      function closeLoginModal() {
+        document.getElementById('adminLoginModal').classList.add('spa-view-hidden');
+      }
+
+      /* ------------------------------------------------------------------------
+         12. EVENT LISTENERS & HANDLER INTERAKTIF
+         ------------------------------------------------------------------------ */
+      function setupEventListeners() {
+        // Trik Rahasia 1: Ketuk Area Logo 3 Kali Berturut-turut (Tanpa Indikator Mencolok bagi Warga)
+        var logoTrigger = document.getElementById('secretLogoTrigger');
+        logoTrigger.addEventListener('click', function() {
+          appState.secretLogoTapCount += 1;
+
+          if (appState.secretLogoTimer) clearTimeout(appState.secretLogoTimer);
+          if (appState.secretLogoTapCount >= 3) {
+            appState.secretLogoTapCount = 0;
+            triggerAdminAccess();
+            return;
+          }
+          appState.secretLogoTimer = setTimeout(function() {
+            appState.secretLogoTapCount = 0;
+          }, 1200);
+        });
+
+        // Trik Rahasia 2: Ketik #/admin atau /admin di URL
+        window.addEventListener('hashchange', function() {
+          checkUrlForAdminRoute();
+        });
+
+        // Tombol Pintas di Header (Hanya muncul saat Admin sudah login)
+        document.getElementById('btnQuickAdminSwitch').addEventListener('click', function() {
+          var adminView = document.getElementById('adminPortalView');
+          var isShowingAdmin = !adminView.classList.contains('spa-view-hidden');
+          if (isShowingAdmin) {
+            switchSpaView('public');
+          } else {
+            triggerAdminAccess();
+          }
+        });
+
+        document.getElementById('btnBackToPublic').addEventListener('click', function() {
+          switchSpaView('public');
+        });
+
+        // Smooth scroll navigasi publik
+        var navBtns = document.querySelectorAll('[data-scroll]');
+        for (var i = 0; i < navBtns.length; i++) {
+          navBtns[i].addEventListener('click', function(e) {
+            var targetId = e.currentTarget.getAttribute('data-scroll');
+            switchSpaView('public');
+            var targetEl = document.getElementById(targetId);
+            if (targetEl) targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          });
+        }
+
+        // Pencarian Real-time Produk & UMKM
+        document.getElementById('searchProdukInput').addEventListener('input', renderPublicProduk);
+        document.getElementById('searchUmkmInput').addEventListener('input', renderPublicUmkm);
+
+        // Modal Login Controls
+        document.getElementById('btnCloseLoginModal').addEventListener('click', closeLoginModal);
+        document.getElementById('btnFillDemoCreds').addEventListener('click', function() {
+          document.getElementById('loginUsernameInput').value = 'admin';
+          document.getElementById('loginPasswordInput').value = 'sumberjo2026';
+          showToast('Kredensial default diisi: admin / sumberjo2026');
+        });
+
+        // Submit Login Admin (Berfungsi via Vercel Fetch REST API, Native GAS, maupun Demo Lokal)
+        document.getElementById('formAdminLogin').addEventListener('submit', function(e) {
+          e.preventDefault();
+          var user = document.getElementById('loginUsernameInput').value.trim();
+          var pass = document.getElementById('loginPasswordInput').value.trim();
+
+          setLoading(true, 'Memverifikasi kredensial dengan Sheet Admin...');
+          callBackendApi(
+            'adminLogin',
+            { username: user, password: pass },
+            function(res) {
+              setLoading(false);
+              if (res && res.success) {
+                appState.sessionToken = res.token;
+                appState.isAdminLoggedIn = true;
+                safeSetStorage(STORAGE_KEYS.SESSION, res.token);
+                closeLoginModal();
+                showToast(res.message || 'Login berhasil!');
+                loadInitialDataFromServer();
+                switchSpaView('admin');
+              } else {
+                showToast((res && res.message) || 'Username atau Password salah.', true);
+              }
+            },
+            function(err) {
+              setLoading(false);
+              showToast('Gagal verifikasi login ke API: ' + (err && err.message ? err.message : 'Kesalahan jaringan'), true);
+            },
+            function() {
+              setLoading(false);
+              var validUser = (appState.data.adminCreds && appState.data.adminCreds.username) || 'admin';
+              var validPass = (appState.data.adminCreds && appState.data.adminCreds.passwordPlain) || 'sumberjo2026';
+              if (user.toLowerCase() === validUser.toLowerCase() && pass === validPass) {
+                appState.isAdminLoggedIn = true;
+                appState.sessionToken = 'DEMO_TOKEN_SUMBERJO';
+                closeLoginModal();
+                renderAllViews();
+                switchSpaView('admin');
+                showToast('✅ Login Berhasil! Selamat datang di Dashboard Admin KDMP Sumberjo.');
+              } else {
+                showToast('Username atau Password tidak cocok dengan Sheet Admin.', true);
+              }
+            }
+          );
+        });
+
+        // Logout Admin
+        document.getElementById('btnAdminLogout').addEventListener('click', function() {
+          if (appState.sessionToken) {
+            callBackendApi('adminLogout', { token: appState.sessionToken }, null, null, null);
+          }
+          appState.isAdminLoggedIn = false;
+          appState.sessionToken = '';
+          safeSetStorage(STORAGE_KEYS.SESSION, '');
+          switchSpaView('public');
+          showToast('Anda telah keluar dari sesi Portal Admin.');
+        });
+
+        // Tab Switching di Portal Admin
+        var tabBtns = document.querySelectorAll('[data-admin-tab]');
+        for (var t = 0; t < tabBtns.length; t++) {
+          tabBtns[t].addEventListener('click', function(e) {
+            var tabName = e.currentTarget.getAttribute('data-admin-tab');
+            for (var j = 0; j < tabBtns.length; j++) {
+              tabBtns[j].classList.remove('active');
+            }
+            e.currentTarget.classList.add('active');
+
+            var panes = {
+              produk: document.getElementById('adminTabProduk'),
+              umkm: document.getElementById('adminTabUmkm'),
+              links: document.getElementById('adminTabLinks'),
+              settings: document.getElementById('adminTabSettings'),
+              security: document.getElementById('adminTabSecurity')
+            };
+            Object.keys(panes).forEach(function(k) {
+              if (k === tabName) panes[k].classList.remove('spa-view-hidden');
+              else panes[k].classList.add('spa-view-hidden');
+            });
+          });
+        }
+
+        // Upload Foto Produk (Base64)
+        var produkDropzone = document.getElementById('produkDropzoneTrigger');
+        var produkFileInput = document.getElementById('produkPhotoFile');
+        produkDropzone.addEventListener('click', function() { produkFileInput.click(); });
+        produkFileInput.addEventListener('change', function(e) {
+          var file = e.target.files && e.target.files[0];
+          if (!file) return;
+          convertFileToBase64(file, function(base64Url) {
+            appState.pendingProdukBase64 = base64Url;
+            document.getElementById('produkPhotoPreviewImg').src = base64Url;
+            document.getElementById('produkPhotoPreviewWrap').classList.add('active');
+            showToast('📸 Foto produk siap diunggah otomatis ke Google Drive!');
+          });
+        });
+
+        // Upload Foto UMKM (Base64)
+        var umkmDropzone = document.getElementById('umkmDropzoneTrigger');
+        var umkmFileInput = document.getElementById('umkmPhotoFile');
+        umkmDropzone.addEventListener('click', function() { umkmFileInput.click(); });
+        umkmFileInput.addEventListener('change', function(e) {
+          var file = e.target.files && e.target.files[0];
+          if (!file) return;
+          convertFileToBase64(file, function(base64Url) {
+            appState.pendingUmkmBase64 = base64Url;
+            document.getElementById('umkmPhotoPreviewImg').src = base64Url;
+            document.getElementById('umkmPhotoPreviewWrap').classList.add('active');
+            showToast('📸 Foto UMKM siap diunggah otomatis ke Google Drive!');
+          });
+        });
+
+        // Reset Form Produk, UMKM, Links
+        document.getElementById('btnResetProdukForm').addEventListener('click', resetProdukForm);
+        document.getElementById('btnResetUmkmForm').addEventListener('click', resetUmkmForm);
+        document.getElementById('btnResetLinkForm').addEventListener('click', resetLinkForm);
+
+        // Submit Form CRUD Produk KDMP
+        document.getElementById('formProdukCrud').addEventListener('submit', function(e) {
+          e.preventDefault();
+          var payload = {
+            id: document.getElementById('produkIdInput').value.trim(),
+            nama: document.getElementById('produkNamaInput').value.trim(),
+            harga: Number(document.getElementById('produkHargaInput').value || 0),
+            noWa: document.getElementById('produkWaInput').value.trim(),
+            deskripsi: document.getElementById('produkDescInput').value.trim(),
+            status: document.getElementById('produkStatusInput').value,
+            idFotoDrive: document.getElementById('produkDriveIdInput').value.trim() || 'DEMO_KAOS',
+            base64Photo: appState.pendingProdukBase64 || ''
+          };
+          executeSaveRecord('produk', payload, resetProdukForm);
+        });
+
+        // Submit Form CRUD UMKM
+        document.getElementById('formUmkmCrud').addEventListener('submit', function(e) {
+          e.preventDefault();
+          var payload = {
+            id: document.getElementById('umkmIdInput').value.trim(),
+            nama: document.getElementById('umkmNamaInput').value.trim(),
+            pengelola: document.getElementById('umkmPengelolaInput').value.trim(),
+            noWa: document.getElementById('umkmWaInput').value.trim(),
+            deskripsi: document.getElementById('umkmDescInput').value.trim(),
+            status: document.getElementById('umkmStatusInput').value,
+            idFotoDrive: document.getElementById('umkmDriveIdInput').value.trim() || 'DEMO_MELON',
+            base64Photo: appState.pendingUmkmBase64 || ''
+          };
+          executeSaveRecord('umkm', payload, resetUmkmForm);
+        });
+
+        // Submit Form CRUD Links
+        document.getElementById('formLinkCrud').addEventListener('submit', function(e) {
+          e.preventDefault();
+          var payload = {
+            id: document.getElementById('linkIdInput').value.trim(),
+            title: document.getElementById('linkTitleInput').value.trim(),
+            url: document.getElementById('linkUrlInput').value.trim(),
+            icon: document.getElementById('linkIconInput').value,
+            status: document.getElementById('linkStatusInput').value
+          };
+          executeSaveRecord('links', payload, resetLinkForm);
+        });
+
+        // Upload Foto Sambutan Tokoh (Base64)
+        var sambutanDropzone = document.getElementById('sambutanDropzoneTrigger');
+        var sambutanFileInput = document.getElementById('sambutanPhotoFile');
+        sambutanDropzone.addEventListener('click', function() { sambutanFileInput.click(); });
+        sambutanFileInput.addEventListener('change', function(e) {
+          var file = e.target.files && e.target.files[0];
+          if (!file) return;
+          convertFileToBase64(file, function(base64Url) {
+            appState.pendingSambutanBase64 = base64Url;
+            document.getElementById('sambutanPhotoPreviewImg').src = base64Url;
+            document.getElementById('sambutanPhotoPreviewWrap').classList.add('active');
+            showToast('📸 Foto Sambutan siap disimpan ke Google Drive & Sheet Settings!');
+          });
+        });
+
+        // Upload Logo Web (Base64)
+        var logoDropzone = document.getElementById('logoDropzoneTrigger');
+        var logoFileInput = document.getElementById('logoPhotoFile');
+        logoDropzone.addEventListener('click', function() { logoFileInput.click(); });
+        logoFileInput.addEventListener('change', function(e) {
+          var file = e.target.files && e.target.files[0];
+          if (!file) return;
+          convertFileToBase64(file, function(base64Url) {
+            appState.pendingLogoBase64 = base64Url;
+            document.getElementById('logoPhotoPreviewImg').src = base64Url;
+            document.getElementById('logoPhotoPreviewWrap').classList.add('active');
+            showToast('🛡️ Logo Koperasi siap disimpan ke Google Drive & Sheet Settings!');
+          });
+        });
+
+        // Submit Form Global Settings (Sambutan + Foto Tokoh + Logo + Identitas Web)
+        document.getElementById('formGlobalSettings').addEventListener('submit', function(e) {
+          e.preventDefault();
+          var currentFotoSambutan = appState.pendingSambutanBase64 || document.getElementById('setIdFotoSambutan').value.trim() || 'DEMO_TOKOH';
+          var currentLogoWeb = appState.pendingLogoBase64 || document.getElementById('setIdLogoWeb').value.trim() || '';
+
+          var newSettings = {
+            Nama_Web: document.getElementById('setNamaWeb').value.trim(),
+            Subjudul_Web: document.getElementById('setSubjudulWeb').value.trim(),
+            Judul_Sambutan: document.getElementById('setJudulSambutan').value.trim(),
+            Sambutan_Utama: document.getElementById('setSambutanUtama').value.trim(),
+            Tokoh_Sambutan: document.getElementById('setTokohSambutan').value.trim(),
+            Jabatan_Sambutan: document.getElementById('setJabatanSambutan').value.trim(),
+            ID_Foto_Sambutan: document.getElementById('setIdFotoSambutan').value.trim() || 'DEMO_TOKOH',
+            ID_Logo_Web: document.getElementById('setIdLogoWeb').value.trim() || '',
+            Nomor_WA_Default: document.getElementById('setWaDefault').value.trim(),
+            Pesan_Footer: document.getElementById('setPesanFooter').value.trim(),
+            base64FotoSambutan: appState.pendingSambutanBase64 || '',
+            base64LogoWeb: appState.pendingLogoBase64 || ''
+          };
+
+          setLoading(true, 'Menyimpan Sambutan, Foto & Pengaturan ke Google Drive & Sheet Settings...');
+          callBackendApi(
+            'saveGlobalSettings',
+            { token: appState.sessionToken, settings: newSettings },
+            function(res) {
+              setLoading(false);
+              if (res && res.success) {
+                appState.pendingSambutanBase64 = '';
+                appState.pendingLogoBase64 = '';
+                appState.data.settings = res.settings;
+                renderAllViews();
+                showToast('✅ Sambutan, Foto & Sheet Settings berhasil diperbarui!');
+              } else {
+                showToast((res && res.message) || 'Gagal menyimpan Settings.', true);
+              }
+            },
+            function(err) {
+              setLoading(false);
+              showToast('Gagal menyimpan Settings: ' + (err && err.message ? err.message : 'Kesalahan koneksi'), true);
+            },
+            function() {
+              setLoading(false);
+              newSettings.ID_Foto_Sambutan = currentFotoSambutan;
+              newSettings.Foto_Sambutan_Url = currentFotoSambutan;
+              newSettings.ID_Logo_Web = currentLogoWeb;
+              newSettings.Logo_Web_Url = currentLogoWeb;
+              delete newSettings.base64FotoSambutan;
+              delete newSettings.base64LogoWeb;
+
+              appState.pendingSambutanBase64 = '';
+              appState.pendingLogoBase64 = '';
+              appState.data.settings = newSettings;
+              persistMockDb();
+              renderAllViews();
+              showToast('✅ Sambutan, Foto & Pengaturan Global berhasil diperbarui!');
+            }
+          );
+        });
+
+        // Submit Form Security Admin
+        document.getElementById('formAdminSecurity').addEventListener('submit', function(e) {
+          e.preventDefault();
+          var newU = document.getElementById('secNewUsername').value.trim();
+          var newP = document.getElementById('secNewPassword').value.trim();
+
+          setLoading(true, 'Mengenkripsi & memperbarui Sheet Admin...');
+          callBackendApi(
+            'updateAdminAccount',
+            { token: appState.sessionToken, newUsername: newU, newPassword: newP },
+            function(res) {
+              setLoading(false);
+              showToast((res && res.message) || 'Kredensial diperbarui.');
+              document.getElementById('secNewPassword').value = '';
+            },
+            function(err) {
+              setLoading(false);
+              showToast('Gagal: ' + (err && err.message ? err.message : 'Kesalahan koneksi'), true);
+            },
+            function() {
+              setLoading(false);
+              appState.data.adminCreds = { username: newU, passwordPlain: newP };
+              persistMockDb();
+              document.getElementById('secNewPassword').value = '';
+              showToast('🔒 Kredensial Sheet Admin berhasil diperbarui (SHA-256 Hash)!');
+            }
+          );
+        });
+
+        // Submit Form Koneksi URL API GAS (Untuk Deployment Vercel / GitHub)
+        document.getElementById('formGasApiEndpoint').addEventListener('submit', function(e) {
+          e.preventDefault();
+          var rawUrl = document.getElementById('gasApiUrlInput').value.trim();
+          if (rawUrl && rawUrl.indexOf('https://script.google.com/') !== 0) {
+            showToast('URL harus diawali https://script.google.com/macros/s/.../exec', true);
+            return;
+          }
+          safeSetStorage(STORAGE_KEYS.GAS_API_URL, rawUrl);
+          updateApiStatusBadge();
+          if (rawUrl) {
+            showToast('🔗 Endpoint API GAS disimpan! Menyinkronkan data dari Google Sheets...');
+            loadInitialDataFromServer();
+          } else {
+            showToast('Kembali ke Mode Penyimpanan Lokal.');
+          }
+        });
+
+        document.getElementById('btnClearGasApiUrl').addEventListener('click', function() {
+          document.getElementById('gasApiUrlInput').value = '';
+          safeSetStorage(STORAGE_KEYS.GAS_API_URL, '');
+          updateApiStatusBadge();
+          showToast('Endpoint API direset ke Mode Lokal / Default.');
+        });
+
+        // Event Delegation untuk Tombol Edit, Sembunyikan, dan Hapus di Daftar Admin
+        document.getElementById('adminPortalView').addEventListener('click', function(e) {
+          var btn = e.target.closest('button[data-action]');
+          if (!btn) return;
+          var action = btn.getAttribute('data-action');
+          var id = btn.getAttribute('data-id');
+          handleAdminListAction(action, id);
+        });
+      }
+
+      /* ------------------------------------------------------------------------
+         13. EKSEKUSI CRUD (TAMBAH, EDIT, SEMBUNYIKAN, HAPUS) TANPA RELOAD
+         ------------------------------------------------------------------------ */
+      function executeSaveRecord(entityType, payload, resetCallback) {
+        setLoading(true, payload.base64Photo ? 'Mengunggah foto ke Google Drive & memperbarui Google Sheets...' : 'Memperbarui baris di Google Sheets...');
+        callBackendApi(
+          'saveEntityRecord',
+          { token: appState.sessionToken, entityType: entityType, payload: payload },
+          function(res) {
+            setLoading(false);
+            if (res && res.success) {
+              appState.data.links = res.links || [];
+              appState.data.produk = res.produk || [];
+              appState.data.umkm = res.umkm || [];
+              resetCallback();
+              renderAllViews();
+              showToast('✅ Data berhasil disimpan ke Google Sheets!');
+            } else {
+              showToast((res && res.message) || 'Gagal menyimpan data.', true);
+            }
+          },
+          function(err) {
+            setLoading(false);
+            showToast('Kesalahan koneksi GAS: ' + (err && err.message ? err.message : 'Gagal menyimpan'), true);
+          },
+          function() {
+            setLoading(false);
+            var list = appState.data[entityType] || [];
+            var prefix = entityType === 'links' ? 'LNK-' : (entityType === 'produk' ? 'PRD-' : 'UMK-');
+            var recordId = payload.id || (prefix + String(new Date().getTime()).slice(-4));
+            var photoValue = payload.base64Photo || payload.idFotoDrive;
+
+            var newObj;
+            if (entityType === 'links') {
+              newObj = { id: recordId, title: payload.title, url: payload.url, icon: payload.icon, status: payload.status };
+            } else if (entityType === 'produk') {
+              newObj = { id: recordId, nama: payload.nama, harga: payload.harga, deskripsi: payload.deskripsi, idFotoDrive: photoValue, fotoUrl: photoValue, noWa: payload.noWa, status: payload.status };
+            } else {
+              newObj = { id: recordId, nama: payload.nama, pengelola: payload.pengelola, deskripsi: payload.deskripsi, idFotoDrive: photoValue, fotoUrl: photoValue, noWa: payload.noWa, status: payload.status };
+            }
+
+            var existingIdx = -1;
+            for (var i = 0; i < list.length; i++) {
+              if (list[i].id === recordId) { existingIdx = i; break; }
+            }
+            if (existingIdx >= 0) {
+              list[existingIdx] = newObj;
+            } else {
+              list.unshift(newObj);
+            }
+            persistMockDb();
+            resetCallback();
+            renderAllViews();
+            showToast('✅ Baris berhasil disimpan & langsung tampil tanpa reload!');
+          }
+        );
+      }
+
+      function handleAdminListAction(action, id) {
+        var parts = action.split('-');
+        var verb = parts[0]; // edit, toggle, delete
+        var entity = parts[1]; // produk, umkm, links
+        var list = appState.data[entity] || [];
+        var target = null;
+        for (var i = 0; i < list.length; i++) {
+          if (list[i].id === id) { target = list[i]; break; }
+        }
+        if (!target) return;
+
+        if (verb === 'edit') {
+          if (entity === 'produk') {
+            document.getElementById('formProdukHeading').textContent = '✏️ Edit Produk: ' + target.nama;
+            document.getElementById('produkIdInput').value = target.id;
+            document.getElementById('produkDriveIdInput').value = target.idFotoDrive || '';
+            document.getElementById('produkNamaInput').value = target.nama;
+            document.getElementById('produkHargaInput').value = target.harga;
+            document.getElementById('produkWaInput').value = target.noWa || '';
+            document.getElementById('produkDescInput').value = target.deskripsi;
+            document.getElementById('produkStatusInput').value = target.status || 'Aktif';
+            document.getElementById('produkPhotoPreviewImg').src = resolveImageSrc(target.fotoUrl || target.idFotoDrive, target.nama);
+            document.getElementById('produkPhotoPreviewWrap').classList.add('active');
+            document.getElementById('produkNamaInput').focus();
+          } else if (entity === 'umkm') {
+            document.getElementById('formUmkmHeading').textContent = '✏️ Edit UMKM: ' + target.nama;
+            document.getElementById('umkmIdInput').value = target.id;
+            document.getElementById('umkmDriveIdInput').value = target.idFotoDrive || '';
+            document.getElementById('umkmNamaInput').value = target.nama;
+            document.getElementById('umkmPengelolaInput').value = target.pengelola;
+            document.getElementById('umkmWaInput').value = target.noWa || '';
+            document.getElementById('umkmDescInput').value = target.deskripsi;
+            document.getElementById('umkmStatusInput').value = target.status || 'Aktif';
+            document.getElementById('umkmPhotoPreviewImg').src = resolveImageSrc(target.fotoUrl || target.idFotoDrive, target.nama);
+            document.getElementById('umkmPhotoPreviewWrap').classList.add('active');
+            document.getElementById('umkmNamaInput').focus();
+          } else if (entity === 'links') {
+            document.getElementById('formLinkHeading').textContent = '✏️ Edit Tautan: ' + target.title;
+            document.getElementById('linkIdInput').value = target.id;
+            document.getElementById('linkTitleInput').value = target.title;
+            document.getElementById('linkUrlInput').value = target.url;
+            document.getElementById('linkIconInput').value = target.icon || 'link';
+            document.getElementById('linkStatusInput').value = target.status || 'Aktif';
+            document.getElementById('linkTitleInput').focus();
+          }
+          showToast('Data dimuat ke form editor.');
+          return;
+        }
+
+        if (verb === 'toggle') {
+          setLoading(true, 'Mengubah status visibilitas di Google Sheets...');
+          callBackendApi(
+            'toggleEntityStatus',
+            { token: appState.sessionToken, entityType: entity, recordId: id },
+            function(res) {
+              setLoading(false);
+              if (res && res.success) {
+                appState.data.links = res.links || [];
+                appState.data.produk = res.produk || [];
+                appState.data.umkm = res.umkm || [];
+                renderAllViews();
+                showToast('Status tampil berhasil diperbarui!');
+              }
+            },
+            function(err) {
+              setLoading(false);
+              showToast('Gagal mengubah status: ' + (err && err.message ? err.message : ''), true);
+            },
+            function() {
+              setLoading(false);
+              target.status = (String(target.status).toLowerCase() === 'aktif') ? 'Draft' : 'Aktif';
+              persistMockDb();
+              renderAllViews();
+              showToast('Status diubah menjadi ' + target.status);
+            }
+          );
+          return;
+        }
+
+        if (verb === 'delete') {
+          setLoading(true, 'Menghapus baris dari Google Sheets...');
+          callBackendApi(
+            'deleteEntityRecord',
+            { token: appState.sessionToken, entityType: entity, recordId: id },
+            function(res) {
+              setLoading(false);
+              if (res && res.success) {
+                appState.data.links = res.links || [];
+                appState.data.produk = res.produk || [];
+                appState.data.umkm = res.umkm || [];
+                renderAllViews();
+                showToast('🗑️ Baris berhasil dihapus dari Google Sheets.');
+              }
+            },
+            function(err) {
+              setLoading(false);
+              showToast('Gagal menghapus baris: ' + (err && err.message ? err.message : ''), true);
+            },
+            function() {
+              setLoading(false);
+              appState.data[entity] = list.filter(function(item) { return item.id !== id; });
+              persistMockDb();
+              renderAllViews();
+              showToast('🗑️ Data berhasil dihapus.');
+            }
+          );
+        }
+      }
+
+      function resetProdukForm() {
+        document.getElementById('formProdukCrud').reset();
+        document.getElementById('produkIdInput').value = '';
+        document.getElementById('produkDriveIdInput').value = '';
+        document.getElementById('formProdukHeading').textContent = '➕ Tambah Produk Unggulan KDMP';
+        document.getElementById('produkPhotoPreviewWrap').classList.remove('active');
+        appState.pendingProdukBase64 = '';
+      }
+
+      function resetUmkmForm() {
+        document.getElementById('formUmkmCrud').reset();
+        document.getElementById('umkmIdInput').value = '';
+        document.getElementById('umkmDriveIdInput').value = '';
+        document.getElementById('formUmkmHeading').textContent = '➕ Tambah Potensi Desa / UMKM';
+        document.getElementById('umkmPhotoPreviewWrap').classList.remove('active');
+        appState.pendingUmkmBase64 = '';
+      }
+
+      function resetLinkForm() {
+        document.getElementById('formLinkCrud').reset();
+        document.getElementById('linkIdInput').value = '';
+        document.getElementById('formLinkHeading').textContent = '➕ Tambah Tautan Cepat';
+      }
+
+      /* ------------------------------------------------------------------------
+         14. BOOTSTRAP APLIKASI SAAT DOM SIAP
+         ------------------------------------------------------------------------ */
+      document.addEventListener('DOMContentLoaded', function() {
+        initThemeSystem();
+        setupEventListeners();
+        loadInitialDataFromServer();
+      });
+    })();
+  </script>
+</body>
+</html>
